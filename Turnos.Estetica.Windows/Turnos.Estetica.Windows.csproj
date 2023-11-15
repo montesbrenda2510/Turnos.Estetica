@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EC6000B7-67AE-43D5-9D3C-7E5BB056BDC1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Turnos.Estetica.Windows</RootNamespace>
+    <AssemblyName>Turnos.Estetica.Windows</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormularioClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioClientes.Designer.cs">
+      <DependentUpon>FormularioClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioClientesAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioClientesAE.Designer.cs">
+      <DependentUpon>FormularioClientesAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioMetododePagoAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioMetododePagoAE.Designer.cs">
+      <DependentUpon>FormularioMetododePagoAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioMetododePago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioMetododePago.Designer.cs">
+      <DependentUpon>FormularioMetododePago.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioHorario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioHorario.Designer.cs">
+      <DependentUpon>FormularioHorario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioHorarioAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioHorarioAE.Designer.cs">
+      <DependentUpon>FormularioHorarioAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioPrincipal.Designer.cs">
+      <DependentUpon>FormularioPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioTintes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioTintes.Designer.cs">
+      <DependentUpon>FormularioTintes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioTintesAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioTintesAE.Designer.cs">
+      <DependentUpon>FormularioTintesAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioUnias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioUnias.Designer.cs">
+      <DependentUpon>FormularioUnias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioUniasAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioUniasAE.Designer.cs">
+      <DependentUpon>FormularioUniasAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormularioClientes.resx">
+      <DependentUpon>FormularioClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioClientesAE.resx">
+      <DependentUpon>FormularioClientesAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioHorario.resx">
+      <DependentUpon>FormularioHorario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioHorarioAE.resx">
+      <DependentUpon>FormularioHorarioAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioMetododePago.resx">
+      <DependentUpon>FormularioMetododePago.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioMetododePagoAE.resx">
+      <DependentUpon>FormularioMetododePagoAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioPrincipal.resx">
+      <DependentUpon>FormularioPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioTintes.resx">
+      <DependentUpon>FormularioTintes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioTintesAE.resx">
+      <DependentUpon>FormularioTintesAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioUnias.resx">
+      <DependentUpon>FormularioUnias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioUniasAE.resx">
+      <DependentUpon>FormularioUniasAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Turnos.Estetica.Entetidades\Turnos.Estetica.Entetidades.csproj">
+      <Project>{834BD920-57A6-4DF1-8912-794B4A520F76}</Project>
+      <Name>Turnos.Estetica.Entetidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Turnos.Estetica.Servicios\Turnos.Estetica.Servicios.csproj">
+      <Project>{B7F51A56-BE10-4BC2-9FC4-1CC70F532C92}</Project>
+      <Name>Turnos.Estetica.Servicios</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
