@@ -41,15 +41,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Combos\ClientesComboDto.cs" />
+    <Compile Include="Combos\GeneralCombosDto.cs" />
+    <Compile Include="Combos\PerfiladoComboDto.cs" />
+    <Compile Include="Combos\PestaniaComboDto.cs" />
+    <Compile Include="Combos\ServiciosCombosDto.cs" />
+    <Compile Include="Combos\TurnocomboDto.cs" />
+    <Compile Include="Combos\UniasComboDto.cs" />
+    <Compile Include="EntidadesDto\GeneralDto.cs" />
+    <Compile Include="EntidadesDto\PerfiladoDto.cs" />
+    <Compile Include="EntidadesDto\PestaniasDto.cs" />
+    <Compile Include="EntidadesDto\ServicioDto.cs" />
+    <Compile Include="EntidadesDto\TurnosDto.cs" />
+    <Compile Include="Entidades\General.cs" />
     <Compile Include="Entidades\Horario.cs" />
     <Compile Include="Entidades\Clientes.cs" />
     <Compile Include="Entidades\MetododePago.cs" />
+    <Compile Include="Entidades\Perfilado.cs" />
+    <Compile Include="Entidades\Pestanias.cs" />
+    <Compile Include="Entidades\Servicio.cs" />
     <Compile Include="Entidades\Tintes.cs" />
+    <Compile Include="Entidades\Turno.cs" />
     <Compile Include="Entidades\Unias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EntidadesDto\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

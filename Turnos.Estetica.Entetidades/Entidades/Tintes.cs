@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Turnos.Estetica.Entetidades.Entidades
 {
-    public class Tintes
+    public class Tintes:ICloneable
     {
         public int IdTinte { get; set; }
         public string Color { get; set; }
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

@@ -61,5 +61,85 @@ namespace Turnos.Estetica.Windows
         {
             dataGridViewHorario.Rows.Add(r);
         }
+
+        private void toolStripButtonNuevo_Click(object sender, EventArgs e)
+        {
+            FormularioHorarioAE formulario = new FormularioHorarioAE(_serviciosHorario);
+            DialogResult dr = formulario.ShowDialog();
+
+            if (dr==DialogResult.Cancel)
+            {
+                return;
+            }
+            var horario = formulario.GetHorario();
+           _serviciosHorario.Guardar(horario);
+            //_serviciosHorario.GetCantidad();
+            //_serviciosHorario.Existe();
+            listaHorario = _serviciosHorario.GetHorario();
+            MostrarDatosenGrilla();
+            
+        }
+
+        private void toolStripButtonBorrar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewHorario.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewHorario.SelectedRows[0];
+            Horario horario = (Horario)r.Tag;
+            DialogResult rd = MessageBox.Show($"Estas seguro que quiere eliminar este {horario.Ingreso} {horario.Egreso}" +
+          $" ??  ", "Esperando confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+            if (rd == DialogResult.No)
+            {
+                return;
+            }
+            QuitarFila(r);
+            _serviciosHorario.Borrar(horario.IdHorario);
+            //traigo la lista actualizada
+            listaHorario = _serviciosHorario.GetHorario();
+            MostrarDatosenGrilla();
+        }
+
+        private void QuitarFila(DataGridViewRow r)
+        {
+            dataGridViewHorario.Rows.Remove(r);
+        }
+
+        private void toolStripButtonEditar_Click(object sender, EventArgs e)
+        {
+
+            if (dataGridViewHorario.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewHorario.SelectedRows[0];
+            Horario horario = (Horario)r.Tag;
+            Horario horarioCopia = (Horario)horario.Clone();
+            try
+            {
+                FormularioHorarioAE horarioAE = new FormularioHorarioAE(_serviciosHorario);
+                horarioAE.SetHorario(horario);
+                DialogResult dr = horarioAE.ShowDialog();
+                if (dr == DialogResult.No)
+                {
+                    return;
+                }
+                horario = horarioAE.GetHorario();
+                //preguntar si exite 
+                _serviciosHorario.Guardar(horario);
+                SetearFila(r, horario);
+                MessageBox.Show($"Se edito el horario {horario.Ingreso} {horario.Egreso}"
+          , "Mansaje", MessageBoxButtons.OK);
+            }
+            catch (Exception)
+            {
+                SetearFila(r, horarioCopia);
+                throw;
+            }
+        }
     }
 }

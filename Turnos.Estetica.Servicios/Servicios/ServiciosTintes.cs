@@ -27,6 +27,8 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
+       
+
         public List<Tintes> GetTintes()
         {
             try

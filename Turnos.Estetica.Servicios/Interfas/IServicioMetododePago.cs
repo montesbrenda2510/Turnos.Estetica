@@ -12,5 +12,6 @@ namespace Turnos.Estetica.Servicios.Interfas
         void Guardar(MetododePago metododePago);
         void Borrar(int IdMetododepago);
         List<MetododePago> GetMetododePago();
+        
     }
 }

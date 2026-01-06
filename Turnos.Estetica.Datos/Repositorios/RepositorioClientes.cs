@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using Turnos.Estetica.Comun.Interfases;
+using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
 
 namespace Turnos.Estetica.Datos.Repositorios
@@ -80,6 +82,20 @@ namespace Turnos.Estetica.Datos.Repositorios
             }
         }
 
+        public Clientes GetClientePorId(int idCliente)
+        {
+            Clientes cliente= null;
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string SelectQuery = @"SELECT IdCliente, Nombre,Apellido,Telefono 
+
+                                     From Clientes Where IdCliente=@IdCliente";
+                cliente= conn.QuerySingleOrDefault<Clientes>(SelectQuery, new {idCliente=idCliente});
+
+            }
+            return cliente;
+        }
+
         public List<Clientes> GetClientes()
         {
             var listaClientes = new List<Clientes>();
@@ -101,6 +117,38 @@ namespace Turnos.Estetica.Datos.Repositorios
                 }
                 return listaClientes;
             }
+        }
+
+        public List<ClientesComboDto> GetCombosDto()
+        {
+            var listaCliente = new List<ClientesComboDto>();
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                conn.Open();
+
+                string selectQuery = @"SELECT IdCliente, concat (Nombre, Apellido, Telefono) as Detalle FROM Clientes ";
+                using (var commando = new SqlCommand(selectQuery, conn))
+                {
+
+                    using (var reader = commando.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var clienteCombo = ConstruirClienteComboDto(reader);
+                            listaCliente.Add(clienteCombo);
+                        }
+                    }
+                }
+                return listaCliente;
+            }
+        }
+
+        private ClientesComboDto ConstruirClienteComboDto(SqlDataReader reader)
+        { 
+            return new ClientesComboDto{
+                IdCliente = reader.GetInt32(0),
+               Detalle = reader.GetString(1),
+                    };
         }
 
         private Clientes ConstruirClientes(SqlDataReader reader)

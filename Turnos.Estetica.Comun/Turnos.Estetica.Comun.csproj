@@ -42,9 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfases\IRepositorioClientes.cs" />
+    <Compile Include="Interfases\IRepositorioGeneral.cs" />
     <Compile Include="Interfases\IRepositorioHorario.cs" />
     <Compile Include="Interfases\IRepositorioMetododePago.cs" />
+    <Compile Include="Interfases\IRepositorioPerfilados.cs" />
+    <Compile Include="Interfases\IRepositorioPestanias.cs" />
+    <Compile Include="Interfases\IRepositorioServicios.cs" />
     <Compile Include="Interfases\IRepositorioTintes.cs" />
+    <Compile Include="Interfases\IRepositorioTurno.cs" />
     <Compile Include="Interfases\IRepositorioUnias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

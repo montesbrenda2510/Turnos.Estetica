@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Combos\CombosHelpers.cs" />
     <Compile Include="FormularioClientes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +58,23 @@
     </Compile>
     <Compile Include="FormularioClientesAE.Designer.cs">
       <DependentUpon>FormularioClientesAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioGeneral.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioGeneral.Designer.cs">
+      <DependentUpon>FormularioGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioGeneralAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioGeneralAE.Designer.cs">
+      <DependentUpon>FormularioGeneralAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioMetododePago1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FormularioMetododePago.resx</DependentUpon>
     </Compile>
     <Compile Include="FormularioMetododePagoAE.cs">
       <SubType>Form</SubType>
@@ -82,11 +100,47 @@
     <Compile Include="FormularioHorarioAE.Designer.cs">
       <DependentUpon>FormularioHorarioAE.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormularioPerfiladoAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioPerfiladoAE.Designer.cs">
+      <DependentUpon>FormularioPerfiladoAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioPerfilados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioPerfilados.Designer.cs">
+      <DependentUpon>FormularioPerfilados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioPestaniaAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioPestaniaAE.Designer.cs">
+      <DependentUpon>FormularioPestaniaAE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioPestanias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioPestanias.Designer.cs">
+      <DependentUpon>FormularioPestanias.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormularioPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormularioPrincipal.Designer.cs">
       <DependentUpon>FormularioPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioServicios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioServicios.Designer.cs">
+      <DependentUpon>FormularioServicios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioServiciosAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormularioServiciosAE.Designer.cs">
+      <DependentUpon>FormularioServiciosAE.cs</DependentUpon>
     </Compile>
     <Compile Include="FormularioTintes.cs">
       <SubType>Form</SubType>
@@ -120,6 +174,12 @@
     <EmbeddedResource Include="FormularioClientesAE.resx">
       <DependentUpon>FormularioClientesAE.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormularioGeneral.resx">
+      <DependentUpon>FormularioGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioGeneralAE.resx">
+      <DependentUpon>FormularioGeneralAE.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormularioHorario.resx">
       <DependentUpon>FormularioHorario.cs</DependentUpon>
     </EmbeddedResource>
@@ -128,12 +188,32 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormularioMetododePago.resx">
       <DependentUpon>FormularioMetododePago.cs</DependentUpon>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormularioMetododePago1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="FormularioMetododePagoAE.resx">
       <DependentUpon>FormularioMetododePagoAE.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormularioPerfiladoAE.resx">
+      <DependentUpon>FormularioPerfiladoAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioPerfilados.resx">
+      <DependentUpon>FormularioPerfilados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioPestaniaAE.resx">
+      <DependentUpon>FormularioPestaniaAE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioPestanias.resx">
+      <DependentUpon>FormularioPestanias.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormularioPrincipal.resx">
       <DependentUpon>FormularioPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioServicios.resx">
+      <DependentUpon>FormularioServicios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormularioServiciosAE.resx">
+      <DependentUpon>FormularioServiciosAE.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormularioTintes.resx">
       <DependentUpon>FormularioTintes.cs</DependentUpon>
@@ -155,6 +235,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -170,6 +251,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Turnos.Estetica.Comun\Turnos.Estetica.Comun.csproj">
+      <Project>{5F4D9AA1-0006-4509-8D52-2400CE618FFF}</Project>
+      <Name>Turnos.Estetica.Comun</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Turnos.Estetica.Datos\Turnos.Estetica.Datos.csproj">
+      <Project>{882424F1-A7EE-477F-B276-91426997D831}</Project>
+      <Name>Turnos.Estetica.Datos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Turnos.Estetica.Entetidades\Turnos.Estetica.Entetidades.csproj">
       <Project>{834BD920-57A6-4DF1-8912-794B4A520F76}</Project>
       <Name>Turnos.Estetica.Entetidades</Name>
@@ -178,6 +267,81 @@
       <Project>{B7F51A56-BE10-4BC2-9FC4-1CC70F532C92}</Project>
       <Name>Turnos.Estetica.Servicios</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Aceptar.png" />
+    <Content Include="Resources\Aceptar1.png" />
+    <Content Include="Resources\add_28px.png" />
+    <Content Include="Resources\alphabetical_sorting_16px.png" />
+    <Content Include="Resources\alphabetical_sorting_2_16px.png" />
+    <Content Include="Resources\america_50px.png" />
+    <Content Include="Resources\arrow_20px.png" />
+    <Content Include="Resources\arrow_pointing_left_20px.png" />
+    <Content Include="Resources\barcode_48px.png" />
+    <Content Include="Resources\Buscar.png" />
+    <Content Include="Resources\Buscar1.png" />
+    <Content Include="Resources\Cancelar.png" />
+    <Content Include="Resources\candy_28px.png" />
+    <Content Include="Resources\cash_register_50px.png" />
+    <Content Include="Resources\categorize_50px.png" />
+    <Content Include="Resources\choco-balls.png" />
+    <Content Include="Resources\christmas_gift_28px.png" />
+    <Content Include="Resources\city_50px.png" />
+    <Content Include="Resources\Clientes.png" />
+    <Content Include="Resources\client_management_50px.png" />
+    <Content Include="Resources\Close.png" />
+    <Content Include="Resources\Close1.png" />
+    <Content Include="Resources\customer_50px.png" />
+    <Content Include="Resources\Delete.png" />
+    <Content Include="Resources\Delete1.png" />
+    <Content Include="Resources\delete_forever_18px.png" />
+    <Content Include="Resources\delete_sign_28px.png" />
+    <Content Include="Resources\details_36px.png" />
+    <Content Include="Resources\details_36px1.png" />
+    <Content Include="Resources\details_40px.png" />
+    <Content Include="Resources\Edit.png" />
+    <Content Include="Resources\Edit1.png" />
+    <Content Include="Resources\edit_28px.png" />
+    <Content Include="Resources\edit_28px1.png" />
+    <Content Include="Resources\edit_property_18px.png" />
+    <Content Include="Resources\edit_property_24px.png" />
+    <Content Include="Resources\Empleados.png" />
+    <Content Include="Resources\Files.png" />
+    <Content Include="Resources\filter_40px.png" />
+    <Content Include="Resources\filter_40px1.png" />
+    <Content Include="Resources\filter_intense_40px.png" />
+    <Content Include="Resources\filter_intense_40px1.png" />
+    <Content Include="Resources\first_24px.png" />
+    <Content Include="Resources\first_24px1.png" />
+    <Content Include="Resources\key_2_100px.png" />
+    <Content Include="Resources\last_24px.png" />
+    <Content Include="Resources\last_24px1.png" />
+    <Content Include="Resources\list_40px.png" />
+    <Content Include="Resources\minus_24px.png" />
+    <Content Include="Resources\next_24px.png" />
+    <Content Include="Resources\next_24px1.png" />
+    <Content Include="Resources\Nuevo.png" />
+    <Content Include="Resources\Nuevo1.png" />
+    <Content Include="Resources\numerical_sorting_12_16px.png" />
+    <Content Include="Resources\numerical_sorting_21_16px.png" />
+    <Content Include="Resources\plus_24px.png" />
+    <Content Include="Resources\previous_24px.png" />
+    <Content Include="Resources\previous_24px1.png" />
+    <Content Include="Resources\Print.png" />
+    <Content Include="Resources\Print1.png" />
+    <Content Include="Resources\search_40px.png" />
+    <Content Include="Resources\shutdown_48px.png" />
+    <Content Include="Resources\shutdown_48px1.png" />
+    <Content Include="Resources\shutdown_48px2.png" />
+    <Content Include="Resources\trash_28px.png" />
+    <Content Include="Resources\trash_28px1.png" />
+    <Content Include="Resources\Update.png" />
+    <Content Include="Resources\Update1.png" />
+    <Content Include="Resources\used_product_50px.png" />
+    <Content Include="Resources\Usuarios.png" />
+    <Content Include="Resources\Ventas.png" />
+    <Content Include="Resources\view_details_40px.png" />
+    <Content Include="Resources\view_details_40px1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

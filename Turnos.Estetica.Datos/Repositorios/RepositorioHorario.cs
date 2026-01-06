@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -20,15 +21,16 @@ namespace Turnos.Estetica.Datos.Repositorios
             using (var conn = new SqlConnection(cadenadeConexion))
             {
                 conn.Open();
-                string insertQuery = @"INSERT INTO Horarios (Ingreso, Esgreso) VALUES(@Ingreso, @Egreso);
+                string insertQuery = @"INSERT INTO Horarios ( Ingreso, Egreso) VALUES( @Ingreso, @Egreso);
 					SELECT SCOPE_IDENTITY()";
                 using (var comando = new SqlCommand(insertQuery, conn))
                 {
+                    //comando.Parameters.Add("@IdHorario", SqlDbType.Int);
+                    //comando.Parameters["@IdHorario"].Value = horario.IdHorario;
 
-
-                    comando.Parameters.Add("@Ingreso", SqlDbType.NVarChar);
+                    comando.Parameters.Add("@Ingreso", SqlDbType.DateTime);
                     comando.Parameters["@Ingreso"].Value = horario.Ingreso;
-                    comando.Parameters.Add("@Egreso", SqlDbType.NVarChar);
+                    comando.Parameters.Add("@Egreso", SqlDbType.DateTime);
                     comando.Parameters["@Egreso"].Value = horario.Egreso;
 
 
@@ -46,7 +48,7 @@ namespace Turnos.Estetica.Datos.Repositorios
                 string deleteQuery = "DELETE FROM Horarios WHERE IdHorario=@IdHorario";
                 using (var comando = new SqlCommand(deleteQuery, conn))
                 {
-                    comando.Parameters.Add("IdHorario", SqlDbType.Int);
+                    comando.Parameters.Add("@IdHorario", SqlDbType.Int);
                     comando.Parameters["@IdHorario"].Value = IdHorario;
                     comando.ExecuteNonQuery();
                 }
@@ -63,15 +65,29 @@ namespace Turnos.Estetica.Datos.Repositorios
                 using (var comando = new SqlCommand(updateQuery, conn))
                 {
 
-                    comando.Parameters.Add("Ingreso", SqlDbType.NVarChar);
+                    comando.Parameters.Add("Ingreso", SqlDbType.DateTime);
                     comando.Parameters["@Ingreso"].Value = horario.Ingreso;
 
-                    comando.Parameters.Add("@Egreso", SqlDbType.Int);
+                    comando.Parameters.Add("@Egreso", SqlDbType.DateTime);
                     comando.Parameters["@Egreso"].Value = horario.Egreso;
 
                     comando.ExecuteNonQuery();
                 }
             }
+        }
+
+        public Horario GetHorarioPorId(int IdHorario)
+        {
+            Horario horario = null;
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string SelectQuery = @"SELECT IdHorario,Ingreso, Egreso
+
+                                     From Horarios Where IdHorario=@IdHorario";
+                horario= conn.QuerySingleOrDefault<Horario>(SelectQuery, new { IdHorario=IdHorario});
+
+            }
+            return horario;
         }
 
         public List<Horario> GetHorarios()
@@ -101,8 +117,8 @@ namespace Turnos.Estetica.Datos.Repositorios
             return new Horario
             {
                 IdHorario = reader.GetInt32(0),
-                Ingreso = reader.GetTimeSpan(1),
-                Egreso = reader.GetTimeSpan(2),
+                Ingreso = reader.GetDateTime(1),
+                Egreso = reader.GetDateTime(2),
             };
         }
     }

@@ -46,6 +46,7 @@
             // 
             this.dataGridViewCliente.AllowUserToAddRows = false;
             this.dataGridViewCliente.AllowUserToDeleteRows = false;
+            this.dataGridViewCliente.BackgroundColor = System.Drawing.Color.GreenYellow;
             this.dataGridViewCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCliente.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIdCliente,
@@ -91,6 +92,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.BackColor = System.Drawing.Color.GreenYellow;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonNuevo,
             this.toolStripButtonBorrar,
@@ -100,10 +102,12 @@
             this.toolStrip1.Size = new System.Drawing.Size(337, 38);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
             // 
             // toolStripButtonNuevo
             // 
-            this.toolStripButtonNuevo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonNuevo.Image")));
+            this.toolStripButtonNuevo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.toolStripButtonNuevo.Image = global::Turnos.Estetica.Windows.Properties.Resources.Nuevo;
             this.toolStripButtonNuevo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonNuevo.Name = "toolStripButtonNuevo";
             this.toolStripButtonNuevo.Size = new System.Drawing.Size(46, 35);
@@ -113,6 +117,7 @@
             // 
             // toolStripButtonBorrar
             // 
+            this.toolStripButtonBorrar.BackColor = System.Drawing.Color.Fuchsia;
             this.toolStripButtonBorrar.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonBorrar.Image")));
             this.toolStripButtonBorrar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonBorrar.Name = "toolStripButtonBorrar";
@@ -123,6 +128,7 @@
             // 
             // toolStripButtonEditar
             // 
+            this.toolStripButtonEditar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.toolStripButtonEditar.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEditar.Image")));
             this.toolStripButtonEditar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonEditar.Name = "toolStripButtonEditar";

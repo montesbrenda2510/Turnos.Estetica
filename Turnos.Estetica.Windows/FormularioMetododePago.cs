@@ -14,6 +14,7 @@ namespace Turnos.Estetica.Windows
             InitializeComponent();
             _serviciosMetododePago = new ServicioMetododePago();
         }
+        
         readonly private IServicioMetododePago _serviciosMetododePago;
         private List<MetododePago> listaMetododePago;
         private void FormularioMetododePago_Load(object sender, EventArgs e)
@@ -59,6 +60,83 @@ namespace Turnos.Estetica.Windows
             return r;
         }
 
+        private void toolStripButtonBorrar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewMetododePago.SelectedRows.Count == 0)
+            {
+                return;
+            }
 
+            var r =dataGridViewMetododePago.SelectedRows[0];
+            MetododePago metododePago = (MetododePago)r.Tag;
+            DialogResult rd = MessageBox.Show($"Estas seguro que quiere eliminar este {metododePago.Tipodepago}" +
+          $" ??  ", "Esperando confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+            if (rd == DialogResult.No)
+            {
+                return;
+            }
+            QuitarFila(r);
+            _serviciosMetododePago.Borrar(metododePago.IdMetododePago);
+            //traigo la lista actualizada
+            listaMetododePago = _serviciosMetododePago.GetMetododePago();
+            MostrarDatosenGrilla();
+        }
+        private void QuitarFila(DataGridViewRow r)
+        {
+            dataGridViewMetododePago.Rows.Remove(r);
+        }
+        private void toolStripButtonNuevo_Click(object sender, EventArgs e)
+        {
+            FormularioMetododePagoAE formulario = new FormularioMetododePagoAE(_serviciosMetododePago);
+            DialogResult dr = formulario.ShowDialog();
+
+            if (dr == DialogResult.Cancel)
+            {
+                return;
+            }
+            //obtener el clientes, se lo pido al formulario
+            var metododePago = formulario.GetMetododepago();
+            //preguntar si existe 
+            _serviciosMetododePago.Guardar(metododePago);
+            //preguntar la cantidad
+            //_serviciosClientes.GetCantidad();
+            listaMetododePago = _serviciosMetododePago.GetMetododePago();
+            MostrarDatosenGrilla();
+        }
+
+        private void toolStripButtonEditar_Click(object sender, EventArgs e)
+        {
+
+            if (dataGridViewMetododePago.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewMetododePago.SelectedRows[0];
+            MetododePago metododePago = (MetododePago)r.Tag;
+            MetododePago metodoCopia = (MetododePago)metododePago.Clone();
+            try
+            {
+               FormularioMetododePagoAE metododePagoAE = new FormularioMetododePagoAE(_serviciosMetododePago);
+                metododePagoAE.SetMetododePago(metododePago);
+                DialogResult dr = metododePagoAE.ShowDialog();
+                if (dr == DialogResult.No)
+                {
+                    return;
+                }
+                metododePago = metododePagoAE.GetMetododepago();
+                //preguntar si exite 
+                _serviciosMetododePago.Guardar(metododePago);
+                SetearFila(r, metododePago);
+                MessageBox.Show($"Se edito el metodo de pago {metododePago.Tipodepago} "
+          , "Mansaje", MessageBoxButtons.OK);
+            }
+            catch (Exception)
+            {
+                SetearFila(r, metodoCopia);
+                throw;
+            }
+        }
     }
 }

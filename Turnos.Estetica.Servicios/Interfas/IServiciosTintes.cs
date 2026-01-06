@@ -8,5 +8,6 @@ namespace Turnos.Estetica.Servicios.Interfas
         void Guardar(Tintes tintes);
         void Borrar (int IdTinte);
         List<Tintes> GetTintes();
+      
     }
 }

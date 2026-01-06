@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Turnos.Estetica.Entetidades.Entidades;
 using Turnos.Estetica.Servicios.Interfas;
@@ -20,7 +14,7 @@ namespace Turnos.Estetica.Windows
             InitializeComponent();
             _serviciosUnias = new ServicioUnias();
         }
-       
+
         readonly private IServicioUnias _serviciosUnias;
         private List<Unias> listaUnias;
 
@@ -45,14 +39,14 @@ namespace Turnos.Estetica.Windows
 
         private void MostrarDatosenGrilla()
         {
-                dataGridViewUnia.Rows.Clear();
-                foreach (var unias in listaUnias)
-                {
-                    DataGridViewRow r = ConstruirFila();
-                    SetearFila(r, unias);
-                    AgregarFila(r);
-                }
-            
+            dataGridViewUnia.Rows.Clear();
+            foreach (var unias in listaUnias)
+            {
+                DataGridViewRow r = ConstruirFila();
+                SetearFila(r, unias);
+                AgregarFila(r);
+            }
+
         }
 
         private void AgregarFila(DataGridViewRow r)
@@ -73,6 +67,87 @@ namespace Turnos.Estetica.Windows
             DataGridViewRow r = new DataGridViewRow();
             r.CreateCells(dataGridViewUnia);
             return r;
+        }
+
+        private void toolStripButtonNuevo_Click(object sender, EventArgs e)
+        {
+            FormularioUñasAE formulario = new FormularioUñasAE(_serviciosUnias);
+            DialogResult dr = formulario.ShowDialog();
+
+            if (dr == DialogResult.Cancel)
+            {
+                return;
+            }
+            //obtener el clientes, se lo pido al formulario
+            var unia = formulario.GetUnia();
+            //preguntar si existe 
+           _serviciosUnias.Guardar(unia);
+            //preguntar la cantidad
+            //_serviciosClientes.GetCantidad();
+            listaUnias = _serviciosUnias.GetUnia();
+            MostrarDatosenGrilla();
+        }
+
+        private void toolStripButtonBorrar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewUnia.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewUnia.SelectedRows[0];
+           Unias unias = (Unias)r.Tag;
+            DialogResult rd = MessageBox.Show($"Estas seguro que quiere eliminar este servicio {unias.TipodeServicio} " +
+          $" ??  ", "Esperando confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+            if (rd == DialogResult.No)
+            {
+                return;
+            }
+            QuitarFila(r);
+            _serviciosUnias.Borrar(unias.IdUnia);
+            //traigo la lista actualizada
+            listaUnias = _serviciosUnias.GetUnia();
+            MostrarDatosenGrilla();
+        }
+
+        private void QuitarFila(DataGridViewRow r)
+        {
+            dataGridViewUnia.Rows.Remove(r);
+        }
+
+        private void toolStripButtonEditar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewUnia.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewUnia.SelectedRows[0];
+            Unias unias = (Unias)r.Tag;
+            Unias uniaCopia = (Unias)unias.Clone();
+            try
+            {
+                FormularioUñasAE uniasAE = new FormularioUñasAE(_serviciosUnias);
+                uniasAE.SetTintes(unias);
+                DialogResult dr = uniasAE.ShowDialog();
+                if (dr == DialogResult.No)
+                {
+                    return;
+                }
+                unias= uniasAE.GetUnia();
+                //preguntar si exite 
+                _serviciosUnias.Guardar(unias);
+                SetearFila(r, unias);
+                MessageBox.Show($"Se edito el sevicio uña {unias.TipodeServicio} " +
+                    $"con un valor de {unias.Valor}"
+          ,         "Mansaje", MessageBoxButtons.OK);
+            }
+            catch (Exception)
+            {
+                SetearFila(r, uniaCopia);
+                throw;
+            }
         }
     }
 }

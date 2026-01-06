@@ -2,10 +2,17 @@
 
 namespace Turnos.Estetica.Entetidades.Entidades
 {
-    public class Horario
+    public class Horario:ICloneable
     {
         public int IdHorario { get; set; }
-        public TimeSpan Ingreso { get; set; }
-        public TimeSpan Egreso { get; set; }
+        public DateTime Ingreso { get; set; }
+        public DateTime Egreso { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+       
     }
 }

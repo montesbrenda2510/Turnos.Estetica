@@ -27,6 +27,16 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
+        //public void Existe()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void GetCantidad()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         public List<Horario> GetHorario()
         {
             try

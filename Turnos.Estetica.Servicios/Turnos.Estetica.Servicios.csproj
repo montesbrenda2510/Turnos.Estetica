@@ -41,19 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfas\IServicioGeneral.cs" />
     <Compile Include="Interfas\IServicioHorario.cs" />
     <Compile Include="Interfas\IServicioClientes.cs" />
     <Compile Include="Interfas\IServicioMetododePago.cs" />
+    <Compile Include="Interfas\IServicioPerfilados.cs" />
+    <Compile Include="Interfas\IServicioPestanias.cs" />
+    <Compile Include="Interfas\IServicioServicios.cs" />
     <Compile Include="Interfas\IServiciosTintes.cs" />
     <Compile Include="Interfas\IServicioUnias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\ServicioGeneral.cs" />
     <Compile Include="Servicios\ServicioHorario.cs" />
     <Compile Include="Servicios\ServicioMetododePago.cs" />
+    <Compile Include="Servicios\ServicioPerfilados.cs" />
+    <Compile Include="Servicios\ServicioPestanias.cs" />
     <Compile Include="Servicios\ServiciosClientes.cs" />
+    <Compile Include="Servicios\ServicioServicios.cs" />
     <Compile Include="Servicios\ServiciosTintes.cs" />
     <Compile Include="Servicios\ServicioUnias.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Turnos.Estetica.Comun\Turnos.Estetica.Comun.csproj">
       <Project>{5F4D9AA1-0006-4509-8D52-2400CE618FFF}</Project>

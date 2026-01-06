@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Turnos.Estetica.Entetidades.Entidades;
 using Turnos.Estetica.Servicios.Interfas;
@@ -17,7 +10,7 @@ namespace Turnos.Estetica.Windows
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (clientes!= null)
+            if (clientes != null)
             {
                 textBoxNombre.Text = clientes.Nombre;
                 textBoxApellido.Text = clientes.Apellido;
@@ -29,7 +22,7 @@ namespace Turnos.Estetica.Windows
         public FormularioClientesAE(IServicioClientes servicio)
         {
             InitializeComponent();
-            _servicio = servicio ;
+            _servicio = servicio;
         }
         private Clientes clientes;
         internal Clientes GetClinte()
@@ -92,5 +85,6 @@ namespace Turnos.Estetica.Windows
         {
             this.clientes = clientes;
         }
+
     }
 }

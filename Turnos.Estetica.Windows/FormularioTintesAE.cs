@@ -8,15 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Turnos.Estetica.Entetidades.Entidades;
+using Turnos.Estetica.Servicios.Interfas;
 
 namespace Turnos.Estetica.Windows
 {
     public partial class FormularioTintesAE : Form
     {
-        public FormularioTintesAE()
+        private readonly IServiciosTintes _servicio;
+        public FormularioTintesAE(IServiciosTintes servicios)
         {
             InitializeComponent();
+            _servicio = servicios;
         }
+       
         private Tintes tintes;
         protected override void OnLoad(EventArgs e)
         {
@@ -61,5 +65,7 @@ namespace Turnos.Estetica.Windows
         {
             return tintes;
         }
+
+      
     }
 }

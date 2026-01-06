@@ -20,7 +20,7 @@ namespace Turnos.Estetica.Datos.Repositorios
             using (var conn = new SqlConnection(cadenadeConexion))
             {
                 conn.Open();
-                string insertQuery = @"INSERT INTO MetodosdePago (TipodePago) VALUES(@TipodePago);
+                string insertQuery = @"INSERT INTO MetododePago (TipodePago) VALUES(@TipodePago);
 					SELECT SCOPE_IDENTITY()";
                 using (var comando = new SqlCommand(insertQuery, conn))
                 {

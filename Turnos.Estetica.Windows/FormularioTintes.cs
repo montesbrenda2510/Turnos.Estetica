@@ -64,5 +64,85 @@ namespace Turnos.Estetica.Windows
         {
 
         }
+
+        private void toolStripButtonBorrar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewTinte.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewTinte.SelectedRows[0];
+           Tintes tintes = (Tintes)r.Tag;
+            DialogResult rd = MessageBox.Show($"Estas seguro que quiere eliminar este {tintes.Color} " +
+          $" ??  ", "Esperando confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+            if (rd == DialogResult.No)
+            {
+                return;
+            }
+            QuitarFila(r);
+            _serviciosTintes.Borrar(tintes.IdTinte);
+            //traigo la lista actualizada
+            listatintes = _serviciosTintes.GetTintes();
+            MostrarDatosenGrilla();
+        }
+
+        private void QuitarFila(DataGridViewRow r)
+        {
+            dataGridViewTinte.Rows.Remove(r);
+        }
+
+        private void toolStripButtonNuevo_Click(object sender, EventArgs e)
+        {
+            FormularioTintesAE formulario = new FormularioTintesAE(_serviciosTintes);
+            DialogResult dr = formulario.ShowDialog();
+
+            if (dr == DialogResult.Cancel)
+            {
+                return;
+            }
+            //obtener el clientes, se lo pido al formulario
+            var tinte = formulario.GetTintes();
+            //preguntar si existe 
+            _serviciosTintes.Guardar(tinte);
+            //preguntar la cantidad
+            //_serviciosClientes.GetCantidad();
+           listatintes = _serviciosTintes.GetTintes();
+            MostrarDatosenGrilla();
+        }
+
+        private void toolStripButtonEditar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewTinte.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var r = dataGridViewTinte.SelectedRows[0];
+            Tintes tintes = (Tintes)r.Tag;
+            Tintes tintesCopia = (Tintes)tintes.Clone();
+            try
+            {
+                FormularioTintesAE tintesAE = new FormularioTintesAE(_serviciosTintes);
+                tintesAE.SetTintes(tintes);
+                DialogResult dr = tintesAE.ShowDialog();
+                if (dr == DialogResult.No)
+                {
+                    return;
+                }
+                tintes = tintesAE.GetTintes();
+                //preguntar si exite 
+                _serviciosTintes.Guardar(tintes);
+                SetearFila(r,tintes);
+                MessageBox.Show($"Se edito el Tinte {tintes.Color}"
+          , "Mansaje", MessageBoxButtons.OK);
+            }
+            catch (Exception)
+            {
+                SetearFila(r, tintesCopia);
+                throw;
+            }
+        }
     }
 }

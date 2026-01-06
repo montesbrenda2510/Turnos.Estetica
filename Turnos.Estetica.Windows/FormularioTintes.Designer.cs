@@ -42,6 +42,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.BackColor = System.Drawing.Color.RosyBrown;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonNuevo,
             this.toolStripButtonBorrar,
@@ -55,35 +56,42 @@
             // 
             // toolStripButtonNuevo
             // 
-            this.toolStripButtonNuevo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonNuevo.Image")));
+            this.toolStripButtonNuevo.BackColor = System.Drawing.Color.DarkViolet;
+            this.toolStripButtonNuevo.Image = global::Turnos.Estetica.Windows.Properties.Resources.Nuevo;
             this.toolStripButtonNuevo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonNuevo.Name = "toolStripButtonNuevo";
             this.toolStripButtonNuevo.Size = new System.Drawing.Size(46, 35);
             this.toolStripButtonNuevo.Text = "Nuevo";
             this.toolStripButtonNuevo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonNuevo.Click += new System.EventHandler(this.toolStripButtonNuevo_Click);
             // 
             // toolStripButtonBorrar
             // 
+            this.toolStripButtonBorrar.BackColor = System.Drawing.Color.Yellow;
             this.toolStripButtonBorrar.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonBorrar.Image")));
             this.toolStripButtonBorrar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonBorrar.Name = "toolStripButtonBorrar";
             this.toolStripButtonBorrar.Size = new System.Drawing.Size(43, 35);
             this.toolStripButtonBorrar.Text = "Borrar";
             this.toolStripButtonBorrar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonBorrar.Click += new System.EventHandler(this.toolStripButtonBorrar_Click);
             // 
             // toolStripButtonEditar
             // 
+            this.toolStripButtonEditar.BackColor = System.Drawing.Color.LimeGreen;
             this.toolStripButtonEditar.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEditar.Image")));
             this.toolStripButtonEditar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonEditar.Name = "toolStripButtonEditar";
             this.toolStripButtonEditar.Size = new System.Drawing.Size(41, 35);
             this.toolStripButtonEditar.Text = "Editar";
             this.toolStripButtonEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonEditar.Click += new System.EventHandler(this.toolStripButtonEditar_Click);
             // 
             // dataGridViewTinte
             // 
             this.dataGridViewTinte.AllowUserToAddRows = false;
             this.dataGridViewTinte.AllowUserToDeleteRows = false;
+            this.dataGridViewTinte.BackgroundColor = System.Drawing.Color.RosyBrown;
             this.dataGridViewTinte.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewTinte.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIdTinte,

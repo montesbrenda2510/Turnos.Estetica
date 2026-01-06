@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 using Turnos.Estetica.Entetidades.Entidades;
+using Turnos.Estetica.Servicios.Interfas;
 
 namespace Turnos.Estetica.Windows
 {
     public partial class FormularioUñasAE : Form
     {
-        public FormularioUñasAE()
+        private readonly IServicioUnias _servicio;
+        public FormularioUñasAE(IServicioUnias servicio)
         {
             InitializeComponent();
+            _servicio = servicio;
+
         }
         private Unias unias;
         protected override void OnLoad(EventArgs e)

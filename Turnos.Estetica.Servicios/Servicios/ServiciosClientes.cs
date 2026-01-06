@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Turnos.Estetica.Comun.Interfases;
 using Turnos.Estetica.Datos.Repositorios;
+using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
 using Turnos.Estetica.Servicios.Interfas;
 
@@ -40,6 +41,32 @@ namespace Turnos.Estetica.Servicios.Servicios
             try
             {
                 return _repositorioClientes.GetClientes();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Clientes GetClientePorId(int idCliente)
+        {
+            try
+            {
+                return _repositorioClientes.GetClientePorId(idCliente);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<ClientesComboDto> GetCombosDto()
+        {
+            try
+            {
+                return _repositorioClientes.GetCombosDto();
             }
             catch (Exception)
             {

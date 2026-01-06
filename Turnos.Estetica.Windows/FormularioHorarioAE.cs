@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Windows.Forms;
 using Turnos.Estetica.Entetidades.Entidades;
+using Turnos.Estetica.Servicios.Interfas;
 
 namespace Turnos.Estetica.Windows
 {
     public partial class FormularioHorarioAE : Form
     {
-        public FormularioHorarioAE()
+        public FormularioHorarioAE(IServicioHorario servicio)
         {
             InitializeComponent();
+            _servicio = servicio;
         }
+        private readonly IServicioHorario _servicio;
+       
         private Horario horario;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             if (horario != null)
             {
-                dateTimePickerIngreso.Value = DateTime.Today.Add(horario.Ingreso);
-                dateTimePickerEgreso.Value=DateTime.Today.Add(horario.Egreso);  
+                dateTimePickerIngreso.Value = horario.Ingreso;
+                dateTimePickerEgreso.Value=horario.Egreso;  
             }
         }
 
@@ -32,10 +36,23 @@ namespace Turnos.Estetica.Windows
             {
                 horario = new Horario();
             }
-            horario.Egreso = new TimeSpan(dateTimePickerEgreso.Value.Hour, dateTimePickerEgreso.Value.Minute, dateTimePickerEgreso.Value.Second);
+            horario.Egreso = new DateTime(
+                dateTimePickerEgreso.Value.Year,
+                dateTimePickerEgreso.Value.Month,
+                dateTimePickerEgreso.Value.Day,
+                dateTimePickerEgreso.Value.Hour,
+                dateTimePickerEgreso.Value.Minute,
+                dateTimePickerEgreso.Value.Second
+            );
 
-            horario.Ingreso = new TimeSpan(dateTimePickerIngreso.Value.Hour, dateTimePickerIngreso.Value.Minute, dateTimePickerIngreso.Value.Second);
-            DialogResult = DialogResult.OK; 
+            horario.Ingreso = new DateTime(
+                dateTimePickerIngreso.Value.Year,
+                dateTimePickerIngreso.Value.Month,
+                dateTimePickerIngreso.Value.Day,
+                dateTimePickerIngreso.Value.Hour,
+                dateTimePickerIngreso.Value.Minute,
+                dateTimePickerIngreso.Value.Second
+            ); DialogResult = DialogResult.OK; 
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)

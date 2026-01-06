@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Turnos.Estetica.Windows
@@ -19,14 +12,14 @@ namespace Turnos.Estetica.Windows
 
         private void buttonTintes_Click(object sender, EventArgs e)
         {
-            FormularioTintes formulario=new FormularioTintes(); 
-            formulario.ShowDialog();    
+            FormularioTintes formulario = new FormularioTintes();
+            formulario.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             FormularioClientes formulario = new FormularioClientes();
-            formulario.ShowDialog();    
+            formulario.ShowDialog();
         }
 
         private void buttonHorario_Click(object sender, EventArgs e)
@@ -37,7 +30,7 @@ namespace Turnos.Estetica.Windows
 
         private void buttonMdP_Click(object sender, EventArgs e)
         {
-            FormularioMetododePago formulario= new FormularioMetododePago();
+            FormularioMetododePago formulario = new FormularioMetododePago();
             formulario.ShowDialog();
         }
 
@@ -50,6 +43,36 @@ namespace Turnos.Estetica.Windows
         {
             FormularioUnias formulario = new FormularioUnias();
             formulario.ShowDialog();
+        }
+
+        private void Perfiladobtn_Click(object sender, EventArgs e)
+        {
+            FormularioPerfilados formulario = new FormularioPerfilados();
+            formulario.ShowDialog();
+
+        }
+
+        private void Pestaniasbtn_Click(object sender, EventArgs e)
+        {
+            FormularioPestanias formulario = new FormularioPestanias();
+            formulario.ShowDialog();
+        }
+
+        private void Generalbtn_Click(object sender, EventArgs e)
+        {
+            FormularioGeneral formulario = new FormularioGeneral();
+            formulario.ShowDialog();
+        }
+
+        private void Serviciosbtn_Click(object sender, EventArgs e)
+        {
+            FormularioServicios formulario = new FormularioServicios();
+            formulario.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

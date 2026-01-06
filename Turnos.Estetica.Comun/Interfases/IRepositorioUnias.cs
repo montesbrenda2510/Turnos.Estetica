@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
 
 namespace Turnos.Estetica.Comun.Interfases
@@ -9,5 +10,6 @@ namespace Turnos.Estetica.Comun.Interfases
         void Borrar(int IdUnias);
         void Editar(Unias unias);
         List<Unias> GetUnias();
+        
     }
 }
