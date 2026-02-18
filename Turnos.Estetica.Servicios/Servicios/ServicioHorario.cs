@@ -27,10 +27,18 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
-        //public void Existe()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public bool Existe(Horario horario)
+        {
+            try
+            {
+                return _repositorioHorario.Existe(horario);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         //public void GetCantidad()
         //{

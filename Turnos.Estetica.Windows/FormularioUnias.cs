@@ -57,7 +57,7 @@ namespace Turnos.Estetica.Windows
         private void SetearFila(DataGridViewRow r, Unias unias)
         {
             r.Cells[ColumnIdUña.Index].Value = unias.IdUnia;
-            r.Cells[ColumnServicio.Index].Value = unias.TipodeServicio;
+            r.Cells[ColumnServicio.Index].Value = unias.TipodeServicioUnia;
             r.Cells[ColumnValor.Index].Value = unias.Valor;
             r.Tag = unias;
         }
@@ -81,7 +81,7 @@ namespace Turnos.Estetica.Windows
             //obtener el clientes, se lo pido al formulario
             var unia = formulario.GetUnia();
             //preguntar si existe 
-           _serviciosUnias.Guardar(unia);
+            _serviciosUnias.Guardar(unia);
             //preguntar la cantidad
             //_serviciosClientes.GetCantidad();
             listaUnias = _serviciosUnias.GetUnia();
@@ -97,7 +97,7 @@ namespace Turnos.Estetica.Windows
 
             var r = dataGridViewUnia.SelectedRows[0];
            Unias unias = (Unias)r.Tag;
-            DialogResult rd = MessageBox.Show($"Estas seguro que quiere eliminar este servicio {unias.TipodeServicio} " +
+            DialogResult rd = MessageBox.Show($"Estas seguro que quiere eliminar este servicio {unias.TipodeServicioUnia} " +
           $" ??  ", "Esperando confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
             if (rd == DialogResult.No)
@@ -139,7 +139,7 @@ namespace Turnos.Estetica.Windows
                 //preguntar si exite 
                 _serviciosUnias.Guardar(unias);
                 SetearFila(r, unias);
-                MessageBox.Show($"Se edito el sevicio uña {unias.TipodeServicio} " +
+                MessageBox.Show($"Se edito el sevicio uña {unias.TipodeServicioUnia} " +
                     $"con un valor de {unias.Valor}"
           ,         "Mansaje", MessageBoxButtons.OK);
             }
@@ -148,6 +148,11 @@ namespace Turnos.Estetica.Windows
                 SetearFila(r, uniaCopia);
                 throw;
             }
+        }
+
+        private void dataGridViewUnia_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

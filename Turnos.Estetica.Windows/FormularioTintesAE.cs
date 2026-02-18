@@ -15,19 +15,23 @@ namespace Turnos.Estetica.Windows
     public partial class FormularioTintesAE : Form
     {
         private readonly IServiciosTintes _servicio;
+        private Tintes tintes;
+        private bool esEdicion = false;
+
         public FormularioTintesAE(IServiciosTintes servicios)
         {
             InitializeComponent();
             _servicio = servicios;
         }
-       
-        private Tintes tintes;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (tintes!=null)
+
+            if (tintes != null)
             {
                 textBoxColorTinte.Text = tintes.Color;
+                esEdicion = true;
             }
         }
 
@@ -49,21 +53,74 @@ namespace Turnos.Estetica.Windows
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            if (tintes==null)
-            {
+            if (!ValidarDatos())
+                return;
+
+            if (tintes == null)
                 tintes = new Tintes();
-            }
+
             tintes.Color = textBoxColorTinte.Text;
-            DialogResult= DialogResult.OK;  
+
+            try
+            {
+                if (!_servicio.Existe(tintes))
+                {
+                    _servicio.Guardar(tintes);
+
+                    if (!esEdicion)
+                    {
+                        MessageBox.Show("Registro agregado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Registro editado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+
+                    DialogResult = DialogResult.OK;
+                }
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidarDatos()
+        {
+            if (string.IsNullOrWhiteSpace(textBoxColorTinte.Text))
+            {
+                MessageBox.Show("Debe ingresar un color",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
         }
 
         public Tintes GetTintes()
         {
             return tintes;
         }
-        public Tintes SetTintes(Tintes tintes)
+        public void SetTintes(Tintes tintes)
         {
-            return tintes;
+            this.tintes = tintes;
         }
 
       

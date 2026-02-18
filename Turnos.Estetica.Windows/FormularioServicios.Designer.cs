@@ -30,16 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormularioServicios));
             this.dataGridViewCliente = new System.Windows.Forms.DataGridView();
-            this.ColumnDetalle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnPer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnColorPer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnPestania = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnColorPes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnValoraPagar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonNuevo = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonBorrar = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonEditar = new System.Windows.Forms.ToolStripButton();
+            this.ColumnDetalle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnPer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnColorPer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnColorPes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnValoraPagar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCliente)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +53,6 @@
             this.ColumnDetalle,
             this.ColumnPer,
             this.ColumnColorPer,
-            this.ColumnPestania,
             this.ColumnColorPes,
             this.ColumnValoraPagar});
             this.dataGridViewCliente.Location = new System.Drawing.Point(0, 41);
@@ -64,48 +62,6 @@
             this.dataGridViewCliente.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewCliente.Size = new System.Drawing.Size(585, 266);
             this.dataGridViewCliente.TabIndex = 7;
-            // 
-            // ColumnDetalle
-            // 
-            this.ColumnDetalle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnDetalle.HeaderText = "Tipo de Unia";
-            this.ColumnDetalle.Name = "ColumnDetalle";
-            this.ColumnDetalle.ReadOnly = true;
-            // 
-            // ColumnPer
-            // 
-            this.ColumnPer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnPer.HeaderText = "Tipo de perfilado";
-            this.ColumnPer.Name = "ColumnPer";
-            this.ColumnPer.ReadOnly = true;
-            // 
-            // ColumnColorPer
-            // 
-            this.ColumnColorPer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnColorPer.HeaderText = "Color per";
-            this.ColumnColorPer.Name = "ColumnColorPer";
-            this.ColumnColorPer.ReadOnly = true;
-            // 
-            // ColumnPestania
-            // 
-            this.ColumnPestania.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnPestania.HeaderText = "Pestania";
-            this.ColumnPestania.Name = "ColumnPestania";
-            this.ColumnPestania.ReadOnly = true;
-            // 
-            // ColumnColorPes
-            // 
-            this.ColumnColorPes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnColorPes.HeaderText = "Color pes";
-            this.ColumnColorPes.Name = "ColumnColorPes";
-            this.ColumnColorPes.ReadOnly = true;
-            // 
-            // ColumnValoraPagar
-            // 
-            this.ColumnValoraPagar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnValoraPagar.HeaderText = "Valor a Pagar";
-            this.ColumnValoraPagar.Name = "ColumnValoraPagar";
-            this.ColumnValoraPagar.ReadOnly = true;
             // 
             // toolStrip1
             // 
@@ -154,6 +110,41 @@
             this.toolStripButtonEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButtonEditar.Click += new System.EventHandler(this.toolStripButtonEditar_Click);
             // 
+            // ColumnDetalle
+            // 
+            this.ColumnDetalle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnDetalle.HeaderText = "Tipo de Unia";
+            this.ColumnDetalle.Name = "ColumnDetalle";
+            this.ColumnDetalle.ReadOnly = true;
+            // 
+            // ColumnPer
+            // 
+            this.ColumnPer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnPer.HeaderText = "Tipo de perfilado";
+            this.ColumnPer.Name = "ColumnPer";
+            this.ColumnPer.ReadOnly = true;
+            // 
+            // ColumnColorPer
+            // 
+            this.ColumnColorPer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnColorPer.HeaderText = "Color per";
+            this.ColumnColorPer.Name = "ColumnColorPer";
+            this.ColumnColorPer.ReadOnly = true;
+            // 
+            // ColumnColorPes
+            // 
+            this.ColumnColorPes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnColorPes.HeaderText = "Color pes";
+            this.ColumnColorPes.Name = "ColumnColorPes";
+            this.ColumnColorPes.ReadOnly = true;
+            // 
+            // ColumnValoraPagar
+            // 
+            this.ColumnValoraPagar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnValoraPagar.HeaderText = "Valor a Pagar";
+            this.ColumnValoraPagar.Name = "ColumnValoraPagar";
+            this.ColumnValoraPagar.ReadOnly = true;
+            // 
             // FormularioServicios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -182,7 +173,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDetalle;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPer;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColorPer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPestania;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColorPes;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValoraPagar;
     }

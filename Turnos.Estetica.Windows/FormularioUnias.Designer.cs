@@ -56,6 +56,7 @@
             this.dataGridViewUnia.ReadOnly = true;
             this.dataGridViewUnia.Size = new System.Drawing.Size(335, 266);
             this.dataGridViewUnia.TabIndex = 3;
+            this.dataGridViewUnia.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUnia_CellContentClick);
             // 
             // ColumnIdUña
             // 

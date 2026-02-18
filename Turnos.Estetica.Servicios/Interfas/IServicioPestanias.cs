@@ -13,7 +13,7 @@ namespace Turnos.Estetica.Servicios.Interfas
     {
         void Guardar(Pestanias pestanias);
         void Borrar(int IdPestanias);
-        List<PestaniasDto> GetPestaniasDto();
+        List<PestaniasDto> GetPestaniasDto(int IdPestania);
         bool Existe(Pestanias pestanias);
         Pestanias GetPerfiladPorId(int IdPestania);
         List<PestaniaComboDto> GetCombosDto();

@@ -7,22 +7,27 @@ namespace Turnos.Estetica.Windows
 {
     public partial class FormularioHorarioAE : Form
     {
+        private readonly IServicioHorario _servicio;
         public FormularioHorarioAE(IServicioHorario servicio)
         {
             InitializeComponent();
             _servicio = servicio;
         }
-        private readonly IServicioHorario _servicio;
-       
+        
         private Horario horario;
+        private bool esEdicion = false;
+       
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
             if (horario != null)
             {
-                dateTimePickerIngreso.Value = horario.Ingreso;
-                dateTimePickerEgreso.Value=horario.Egreso;  
+                dateTimePickerIngreso.MinDate = DateTime.Now;
+                dateTimePickerEgreso.MinDate = DateTime.Now;
+                esEdicion = true;
             }
+         
         }
 
         private void FormularioHorarioAE_Load(object sender, EventArgs e)
@@ -32,27 +37,91 @@ namespace Turnos.Estetica.Windows
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            if (horario == null)
-            {
-                horario = new Horario();
-            }
-            horario.Egreso = new DateTime(
-                dateTimePickerEgreso.Value.Year,
-                dateTimePickerEgreso.Value.Month,
-                dateTimePickerEgreso.Value.Day,
-                dateTimePickerEgreso.Value.Hour,
-                dateTimePickerEgreso.Value.Minute,
-                dateTimePickerEgreso.Value.Second
-            );
+            if (!ValidarDatos())
+                return;
 
-            horario.Ingreso = new DateTime(
-                dateTimePickerIngreso.Value.Year,
-                dateTimePickerIngreso.Value.Month,
-                dateTimePickerIngreso.Value.Day,
-                dateTimePickerIngreso.Value.Hour,
-                dateTimePickerIngreso.Value.Minute,
-                dateTimePickerIngreso.Value.Second
-            ); DialogResult = DialogResult.OK; 
+            if (horario == null)
+                horario = new Horario();
+
+            // Cargar datos
+            horario.Ingreso = dateTimePickerIngreso.Value;
+            horario.Egreso = dateTimePickerEgreso.Value;
+
+            try
+            {
+                if (!_servicio.Existe(horario))
+                {
+                    _servicio.Guardar(horario);
+
+                    if (!esEdicion)
+                    {
+                        MessageBox.Show("Registro agregado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult dr = MessageBox.Show(
+                            "¿Desea agregar otro registro?",
+                            "Pregunta",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button2);
+
+                        if (dr == DialogResult.No)
+                        {
+                            DialogResult = DialogResult.OK;
+                            return;
+                        }
+
+                        horario = null;
+                        InicializarControles();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Registro editado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult = DialogResult.OK;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void InicializarControles()
+        {
+            dateTimePickerIngreso.Value = DateTime.Now;
+            dateTimePickerEgreso.Value = DateTime.Now;
+        }
+
+        private bool ValidarDatos()
+        {
+            errorProvider1.Clear();
+            bool valido = true;
+
+            if (dateTimePickerEgreso.Value <= dateTimePickerIngreso.Value)
+            {
+                valido = false;
+                errorProvider1.SetError(dateTimePickerEgreso,
+                    "El horario de egreso debe ser mayor al ingreso");
+            }
+
+            return valido;
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)

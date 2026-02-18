@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
 using Turnos.Estetica.Entetidades.EntidadesDto;
 using Turnos.Estetica.Servicios.Interfas;
@@ -66,7 +65,7 @@ namespace Turnos.Estetica.Windows
             r.Cells[ColumnDetalle.Index].Value = servicio.TipodeServicioUnia;
             r.Cells[ColumnPer.Index].Value = servicio.TipodePerfilado;
             r.Cells[ColumnColorPer.Index].Value = servicio.colorPerfilado;
-            r.Cells[ColumnPestania.Index].Value = servicio.TipodePestenia;
+            //r.Cells[ColumnPestania.Index].Value = servicio.TipodePestenia;
             r.Cells[ColumnColorPes.Index].Value = servicio.ColorPestania;
 
             r.Cells[ColumnValoraPagar.Index].Value = servicio.ValoraPagar;
@@ -88,7 +87,7 @@ namespace Turnos.Estetica.Windows
 
         private void toolStripButtonNuevo_Click(object sender, EventArgs e)
         {
-            FormularioServiciosAE formulario = new FormularioServiciosAE(_servicioServicio,_servicioPerfilado,_servicioPestania,_servicioUnia);
+            FormularioServiciosAE formulario = new FormularioServiciosAE(_servicioServicio, _servicioPerfilado, _servicioPestania, _servicioUnia);
             DialogResult dr = formulario.ShowDialog();
 
             if (dr == DialogResult.Cancel)
@@ -139,14 +138,14 @@ namespace Turnos.Estetica.Windows
                 return;
             }
 
-            var r =    dataGridViewCliente.SelectedRows[0];
+            var r = dataGridViewCliente.SelectedRows[0];
             ServicioDto servicio = (ServicioDto)r.Tag;
             ServicioDto servicioCopia = (ServicioDto)servicio.Clone();
             Servicio servicio1 = _servicioServicio.GetServicioPorId(servicio.IdServicio);
 
             try
             {
-                FormularioServiciosAE servicioAE = new FormularioServiciosAE(_servicioServicio, _servicioPerfilado, _servicioPestania, _servicioUnia    );
+                FormularioServiciosAE servicioAE = new FormularioServiciosAE(_servicioServicio, _servicioPerfilado, _servicioPestania, _servicioUnia);
                 servicioAE.SetPerfilado(servicio1);
                 DialogResult dr = servicioAE.ShowDialog(this);
                 if (dr == DialogResult.Cancel)

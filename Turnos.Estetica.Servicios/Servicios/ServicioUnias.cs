@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Turnos.Estetica.Comun.Interfases;
 using Turnos.Estetica.Datos.Repositorios;
+using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
 using Turnos.Estetica.Servicios.Interfas;
 
@@ -24,6 +25,32 @@ namespace Turnos.Estetica.Servicios.Servicios
             {
 
                 throw ex;
+            }
+        }
+
+        public bool Existe(Unias unias)
+        {
+            try
+            {
+                return _repositorioUnia.Existe(unias);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<UniasComboDto> GetComboDto()
+        {
+            try
+            {
+                return _repositorioUnia.GetCombosDto();
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

@@ -7,17 +7,6 @@ namespace Turnos.Estetica.Windows
 {
     public partial class FormularioClientesAE : Form
     {
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            if (clientes != null)
-            {
-                textBoxNombre.Text = clientes.Nombre;
-                textBoxApellido.Text = clientes.Apellido;
-                textBoxTel.Text = clientes.Telefono;
-
-            }
-        }
         private readonly IServicioClientes _servicio;
         public FormularioClientesAE(IServicioClientes servicio)
         {
@@ -25,6 +14,25 @@ namespace Turnos.Estetica.Windows
             _servicio = servicio;
         }
         private Clientes clientes;
+        private bool esEdicion = false;
+        protected override void OnLoad(EventArgs e)
+        {
+            if (true)
+            {
+                if (clientes != null)
+                {
+                    textBoxNombre.Text = clientes.Nombre;
+                    textBoxApellido.Text = clientes.Apellido;
+                    textBoxTel.Text = clientes.Telefono;
+
+                    esEdicion = true;
+
+                }
+
+            }
+           
+        }
+       
         internal Clientes GetClinte()
         {
             return clientes;
@@ -37,19 +45,86 @@ namespace Turnos.Estetica.Windows
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            if (ValidarDatos())
+
+            if (!ValidarDatos())
+                return;
+
+            // PRIMERO crear el objeto
+            if (clientes == null)
+                clientes = new Clientes();
+
+            // DESPUÉS cargar los datos
+            clientes.Nombre = textBoxNombre.Text.Trim();
+            clientes.Apellido = textBoxApellido.Text.Trim();
+            clientes.Telefono = textBoxTel.Text.Trim();
+
+            try
             {
-                if (clientes == null)
+                if (!_servicio.Existe(clientes))
                 {
-                    clientes = new Clientes();
+                    _servicio.Guardar(clientes);
 
+                    if (!esEdicion)
+                    {
+                        MessageBox.Show("Registro agregado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult dr = MessageBox.Show(
+                            "¿Desea agregar otro registro?",
+                            "Pregunta",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button2);
+
+                        if (dr == DialogResult.No)
+                        {
+                            DialogResult = DialogResult.OK;
+                            return;
+                        }
+
+                        // limpiar para nuevo registro
+                        clientes = null;
+                        InicializarControles();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Registro editado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult = DialogResult.OK;
+                    }
                 }
-                clientes.Nombre = textBoxNombre.Text;
-                clientes.Apellido = textBoxApellido.Text;
-                clientes.Telefono = textBoxTel.Text;
-
-                DialogResult = DialogResult.OK;
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
+
+        }
+
+        private void InicializarControles()
+        {
+           
+          
+            textBoxNombre.Clear();
+            textBoxApellido.Clear();
+            textBoxTel.Clear();
+            textBoxNombre.Focus();
         }
 
         private bool ValidarDatos()
@@ -86,5 +161,9 @@ namespace Turnos.Estetica.Windows
             this.clientes = clientes;
         }
 
+        private void textBoxNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

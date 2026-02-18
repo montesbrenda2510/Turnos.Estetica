@@ -13,6 +13,6 @@ namespace Turnos.Estetica.Servicios.Interfas
         void Borrar(int IdHorario);
         List<Horario> GetHorario();
        // void GetCantidad();
-        //void Existe();
+        bool Existe(Horario horario);
     }
 }

@@ -13,50 +13,68 @@ using Turnos.Estetica.Entetidades.EntidadesDto;
 using Turnos.Estetica.Servicios.Interfas;
 using Turnos.Estetica.Servicios.Servicios;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComboBox = System.Windows.Forms.ComboBox;
 
 namespace Turnos.Estetica.Windows
 {
     public partial class FormularioServiciosAE : Form
     {
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            CargarDatosComboPerfilado(ref comboBoxPerfilado);
-            CargarDatosComboPestania(ref comboBoxPestania);
-            CargarDatosComboUnia(ref comboBoxUnias);
-            if (servicio != null)
-            {
-                
-                comboBoxPerfilado.SelectedValue = servicio.IdPerfilado;
-                comboBoxPestania.SelectedValue = servicio.IdPestanias;
-                comboBoxUnias.SelectedValue = servicio.IdUnias;
-                textBox1.Text = servicio.ValoraPagar.ToString();
-
-            }
-        }
+        private readonly IServicioServicios _servicio;
         private readonly IServicioUnias _servicioUnia;
         private readonly IServicioPestanias _servicioPestania;
         private readonly IServicioPerfilados _servicioPerfilado;
-        private PestaniaComboDto pestania;
-        private PerfiladoComboDto perfilado;
-        private Unias unias;
-        private void CargarDatosComboUnia(ref System.Windows.Forms.ComboBox comboBoxUnias)
+
+        private Servicio servicio;
+        private bool esEdicion = false;
+
+        public FormularioServiciosAE(
+            IServicioServicios servicio,
+            IServicioPerfilados perfilados,
+            IServicioPestanias pestanias,
+            IServicioUnias unias)
         {
-            var listaUnias = _servicioUnia.GetUnia();
-            Unias defaultUnia = new Unias()
+            InitializeComponent();
+            _servicio = servicio;
+            _servicioPerfilado = perfilados;
+            _servicioPestania = pestanias;
+            _servicioUnia = unias;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            CargarDatosComboPerfilado(comboBoxPerfilado);
+            CargarDatosComboPestania(comboBoxUnias);
+            CargarDatosComboUnia(comboBoxUnias);
+
+            if (servicio != null)
             {
-                IdUnia= 0,
-                TipodeServicio = "Seleccione el un tipo de servicio Unia"
+                comboBoxPerfilado.SelectedValue = servicio.IdPerfilado;
+                comboBoxPestania.SelectedValue = servicio.IdPestania;
+                comboBoxUnias.SelectedValue = servicio.IdUnia;
+                textBox1.Text = servicio.ValoraPagar.ToString();
+
+                esEdicion = true;
+            }
+        }
+        private void CargarDatosComboUnia(ComboBox comboBoxUnias)
+        {
+            var listaUnias = _servicioUnia.GetComboDto();
+            UniasComboDto defaultUnia = new UniasComboDto()
+            {
+                IdUnia = 0,
+                Detalle = "Seleccione el un tipo de servicio Unia"
             };
             listaUnias.Insert(0, defaultUnia);
             comboBoxUnias.DataSource = listaUnias;
-            comboBoxUnias.DisplayMember = "TipodeServicio";
+            comboBoxUnias.DisplayMember = "Detalle";
             comboBoxUnias.ValueMember = "IdUnia";
 
             comboBoxUnias.SelectedIndex = 0;
         }
 
-        private void CargarDatosComboPestania(ref System.Windows.Forms.ComboBox cmboxColorPestania)
+        private void CargarDatosComboPestania(ComboBox cmboxColorPestania)
         {
             var listaPestania = _servicioPestania.GetCombosDto();
             PestaniaComboDto defaultPestania = new PestaniaComboDto()
@@ -72,7 +90,7 @@ namespace Turnos.Estetica.Windows
             comboBoxPestania.SelectedIndex = 0;
         }
 
-        private void CargarDatosComboPerfilado(ref System.Windows.Forms.ComboBox comboBoxPerfilado)
+        private void CargarDatosComboPerfilado(ComboBox comboBoxPerfilado)
         {
             List<PerfiladoComboDto> listaPerfilado = new List<PerfiladoComboDto>();
 
@@ -90,18 +108,8 @@ namespace Turnos.Estetica.Windows
             comboBoxPerfilado.SelectedIndex = 0;
         }
 
-        private readonly IServicioServicios _servicio;
 
-        private Servicio servicio;
-        public FormularioServiciosAE(IServicioServicios servicio,IServicioPerfilados perfilados,IServicioPestanias pestanias, IServicioUnias unias)
-        {
-            InitializeComponent();
-            _servicio = servicio;
-            _servicioPerfilado = perfilados;
-            _servicioPestania = pestanias;
-            _servicioUnia = unias;
 
-        }
 
         private void comboBoxPerfilado_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -125,19 +133,56 @@ namespace Turnos.Estetica.Windows
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            if (ValidarDatos())
+            if (!ValidarDatos())
+                return;
+
+            if (servicio == null)
+                servicio = new Servicio();
+
+            servicio.IdUnia = (int)comboBoxUnias.SelectedValue;
+            servicio.IdPerfilado = (int)comboBoxPerfilado.SelectedValue;
+            servicio.IdPestania = (int)comboBoxPestania.SelectedValue;
+            servicio.ValoraPagar = decimal.Parse(textBox1.Text);
+
+            try
             {
-                if (servicio == null)
+                if (!_servicio.Existe(servicio))
                 {
-                    servicio = new Servicio();
+                    _servicio.Guardar(servicio);
 
+                    if (!esEdicion)
+                    {
+                        MessageBox.Show("Registro agregado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Registro editado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult = DialogResult.OK;
+                    }
                 }
-                servicio.IdUnias = (int)comboBoxUnias.SelectedValue;
-                servicio.IdPerfilado = (int)comboBoxPerfilado.SelectedValue;
-                servicio.IdPestanias = (int)comboBoxPestania.SelectedValue;
-                servicio.ValoraPagar = decimal.Parse(textBox1.Text);
-
-                DialogResult = DialogResult.OK;
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

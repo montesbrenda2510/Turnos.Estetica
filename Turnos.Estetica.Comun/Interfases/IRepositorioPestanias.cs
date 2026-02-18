@@ -14,6 +14,7 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(Pestanias pestanias);
         void Borrar(int IdPestanias);
         void Editar(Pestanias pestanias);
+        bool Existe(Pestanias pestanias);
         Pestanias GetPestaniaPorId(int IdPestania);
         List<PestaniasDto> GetPestaniasDto();
         List<PestaniaComboDto> GetCombosDto();

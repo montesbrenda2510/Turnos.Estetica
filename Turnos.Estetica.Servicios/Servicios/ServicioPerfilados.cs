@@ -32,7 +32,15 @@ namespace Turnos.Estetica.Servicios.Servicios
 
         public bool Existe(Perfilado perfilado)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repositorioPerfilados.Existe(perfilado);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public List<PerfiladoComboDto> GetCombosDto()

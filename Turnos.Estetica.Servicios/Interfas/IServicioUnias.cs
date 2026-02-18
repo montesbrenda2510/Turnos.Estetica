@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
 
 namespace Turnos.Estetica.Servicios.Interfas
@@ -7,6 +8,8 @@ namespace Turnos.Estetica.Servicios.Interfas
     {
         void Guardar(Unias unias);
         void Borrar(int IdUnia);
+        bool Existe(Unias unias);
         List<Unias> GetUnia();
+        List<UniasComboDto> GetComboDto();
     }
 }

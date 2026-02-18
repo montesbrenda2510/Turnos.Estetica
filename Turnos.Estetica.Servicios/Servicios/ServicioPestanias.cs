@@ -32,7 +32,15 @@ namespace Turnos.Estetica.Servicios.Servicios
 
         public bool Existe(Pestanias pestanias)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repositorioPestanias.Existe(pestanias);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public List<PestaniaComboDto> GetCombosDto()
@@ -61,7 +69,7 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
-        public List<PestaniasDto> GetPestaniasDto()
+        public List<PestaniasDto> GetPestaniasDto(int IdPestania)
         {
             try
             {

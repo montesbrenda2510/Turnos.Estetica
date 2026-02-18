@@ -5,49 +5,32 @@ using System.Data.SqlClient;
 using System.Data;
 using Turnos.Estetica.Comun.Interfases;
 using Turnos.Estetica.Entetidades.Entidades;
+using Dapper;
+using System.Linq;
 
 namespace Turnos.Estetica.Datos.Repositorios
 {
     public class RepositorioMetododePago : IRepositorioMetododePago
     {
         private readonly string cadenadeConexion;
+
         public RepositorioMetododePago()
         {
-            cadenadeConexion = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
+            cadenadeConexion = ConfigurationManager
+                .ConnectionStrings["MiConexion"]
+                .ToString();
         }
+
         public void Agregar(MetododePago metododePago)
         {
             using (var conn = new SqlConnection(cadenadeConexion))
             {
-                conn.Open();
-                string insertQuery = @"INSERT INTO MetododePago (TipodePago) VALUES(@TipodePago);
-					SELECT SCOPE_IDENTITY()";
-                using (var comando = new SqlCommand(insertQuery, conn))
-                {
+                string sql = @"INSERT INTO MetododePago (TipodePago)
+                           VALUES (@TipodePago);
+                           SELECT CAST(SCOPE_IDENTITY() as int);";
 
-
-                    comando.Parameters.Add("@TipodePago", SqlDbType.NVarChar);
-                    comando.Parameters["@TipodePago"].Value = metododePago.Tipodepago;
-
-
-                    int id = Convert.ToInt32(comando.ExecuteScalar());
-                   metododePago.IdMetododePago = id;
-                }
-            }
-        }
-
-        public void Borrar(int IdMetododepago)
-        {
-            using (var conn = new SqlConnection(cadenadeConexion))
-            {
-                conn.Open();
-                string deleteQuery = "DELETE FROM MetododePago WHERE IdMetododePago=@IdMetododePago";
-                using (var comando = new SqlCommand(deleteQuery, conn))
-                {
-                    comando.Parameters.Add("@IdMetododePago", SqlDbType.Int);
-                    comando.Parameters["@IdMetododePago"].Value = IdMetododepago;
-                    comando.ExecuteNonQuery();
-                }
+                int id = conn.QuerySingle<int>(sql, metododePago);
+                metododePago.IdMetododePago = id;
             }
         }
 
@@ -55,51 +38,61 @@ namespace Turnos.Estetica.Datos.Repositorios
         {
             using (var conn = new SqlConnection(cadenadeConexion))
             {
-                conn.Open();
-                string updateQuery = @"UPDATE MetododePago SET TipodePago=@TipodePago
-							WHERE IdMetododePago=@IdMetododePago";
-                using (var comando = new SqlCommand(updateQuery, conn))
+                string sql = @"UPDATE MetododePago
+                           SET TipodePago = @TipodePago
+                           WHERE IdMetododePago = @IdMetododePago";
+
+                conn.Execute(sql, metododePago);
+            }
+        }
+
+        public void Borrar(int idMetododePago)
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql = @"DELETE FROM MetododePago
+                           WHERE IdMetododePago = @IdMetododePago";
+
+                conn.Execute(sql, new { IdMetododePago = idMetododePago });
+            }
+        }
+
+        public bool Existe(MetododePago metododePago)
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql;
+
+                if (metododePago.IdMetododePago == 0)
                 {
-
-                    comando.Parameters.Add("TipodePago", SqlDbType.NVarChar);
-                    comando.Parameters["@TipodePago"].Value = metododePago.Tipodepago;
-
-                    comando.ExecuteNonQuery();
+                    // Alta
+                    sql = @"SELECT COUNT(*) 
+                        FROM MetododePago
+                        WHERE TipodePago = @TipodePago";
                 }
+                else
+                {
+                    // Edición
+                    sql = @"SELECT COUNT(*)
+                        FROM MetododePago
+                        WHERE TipodePago = @TipodePago
+                        AND IdMetododePago <> @IdMetododePago";
+                }
+
+                int cantidad = conn.ExecuteScalar<int>(sql, metododePago);
+                return cantidad > 0;
             }
         }
 
         public List<MetododePago> GetMetododePago()
         {
-            var listaMetododePago = new List<MetododePago>();
             using (var conn = new SqlConnection(cadenadeConexion))
             {
-                conn.Open();
-                string selectQuery = "SELECT IdMetododePago, TipodePago FROM MetododePago";
-                
-                using (var commando = new SqlCommand(selectQuery, conn))
-                {
-                    using (var reader = commando.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var metododepago = ConstruirMetododePago(reader);
-                            listaMetododePago.Add(metododepago);
-                        }
-                    }
-                }
-                return listaMetododePago;
-            }
-        }
+                string sql = @"SELECT IdMetododePago, TipodePago
+                           FROM MetododePago";
 
-        private MetododePago ConstruirMetododePago(SqlDataReader reader)
-        {
-          
-            return new MetododePago
-            {
-                IdMetododePago = reader.GetInt32(0),
-                Tipodepago = reader.GetString(1),
-            };
+                return conn.Query<MetododePago>(sql).ToList();
+            }
         }
     }
 }

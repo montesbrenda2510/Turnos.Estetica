@@ -23,7 +23,7 @@ namespace Turnos.Estetica.Windows
         }
         readonly private IServicioPestanias _servicioPestania;
         private List<PestaniasDto> listaPestanias;
-
+        private Pestanias Pestania = new Pestanias();
         private void FormularioPestanias_Load(object sender, EventArgs e)
         {
             try
@@ -39,7 +39,7 @@ namespace Turnos.Estetica.Windows
 
         private void InicializarGrilla()
         {
-            listaPestanias = _servicioPestania.GetPestaniasDto();
+            listaPestanias = _servicioPestania.GetPestaniasDto(Pestania.IdPestania);
             MostrarDatosenGrilla();
         }
 
@@ -76,21 +76,12 @@ namespace Turnos.Estetica.Windows
 
         private void toolStripButtonNuevo_Click(object sender, EventArgs e)
         {
-            FormularioPestaniaAE formulario = new FormularioPestaniaAE(_servicioPestania);
-            DialogResult dr = formulario.ShowDialog();
+            FormularioPestaniaAE frm = new FormularioPestaniaAE(_servicioPestania) ;
+            frm.SetPestania(Pestania);
 
-            if (dr == DialogResult.No)
-            {
-                return;
-            }
-            //obtener el clientes, se lo pido al formulario
-           var pestania= formulario.GetPestania();
-            //preguntar si existe 
+            DialogResult dr = frm.ShowDialog(this);
 
-            _servicioPestania.Guardar(pestania);
-            //preguntar la cantidad
-            //_serviciosClientes.GetCantidad();
-            listaPestanias = _servicioPestania.GetPestaniasDto();
+            listaPestanias = _servicioPestania.GetPestaniasDto(Pestania.IdPestania);
             MostrarDatosenGrilla();
         }
 
@@ -114,7 +105,7 @@ namespace Turnos.Estetica.Windows
             QuitarFila(r);
             _servicioPestania.Borrar(pestania.IdPestania);
             //traigo la lista actualizada
-            listaPestanias = _servicioPestania.GetPestaniasDto();
+            listaPestanias = _servicioPestania.GetPestaniasDto(Pestania.IdPestania);
             MostrarDatosenGrilla();
         }
         //saca la fila
@@ -138,7 +129,7 @@ namespace Turnos.Estetica.Windows
             try
             {
                 FormularioPestaniaAE pestaniaAE = new FormularioPestaniaAE(_servicioPestania);
-                pestaniaAE.SetPerfilado(pestania1);
+                pestaniaAE.SetPestania(pestania1);
                 DialogResult dr = pestaniaAE.ShowDialog(this);
                 if (dr == DialogResult.Cancel)
                 {

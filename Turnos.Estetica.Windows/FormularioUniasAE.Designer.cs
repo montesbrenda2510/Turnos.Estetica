@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormularioUñasAE));
             this.textBoxValor = new System.Windows.Forms.TextBox();
             this.textBoxServicio = new System.Windows.Forms.TextBox();
@@ -35,6 +36,8 @@
             this.labelServicio = new System.Windows.Forms.Label();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxValor
@@ -95,6 +98,10 @@
             this.buttonCancelar.UseVisualStyleBackColor = false;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // FormularioUñasAE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,6 +117,7 @@
             this.Name = "FormularioUñasAE";
             this.Text = "FormularioUñasAE";
             this.Load += new System.EventHandler(this.FormularioUñasAE_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,5 +131,6 @@
         private System.Windows.Forms.Label labelServicio;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Button buttonCancelar;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

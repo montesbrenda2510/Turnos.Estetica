@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormularioHorarioAE));
             this.labelIngreso = new System.Windows.Forms.Label();
             this.buttonOk = new System.Windows.Forms.Button();
@@ -35,6 +36,8 @@
             this.labelEgreso = new System.Windows.Forms.Label();
             this.dateTimePickerIngreso = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerEgreso = new System.Windows.Forms.DateTimePicker();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // labelIngreso
@@ -84,19 +87,26 @@
             // dateTimePickerIngreso
             // 
             this.dateTimePickerIngreso.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePickerIngreso.Location = new System.Drawing.Point(135, 27);
+            this.dateTimePickerIngreso.Location = new System.Drawing.Point(121, 27);
+            this.dateTimePickerIngreso.MinDate = new System.DateTime(2026, 2, 18, 0, 0, 0, 0);
             this.dateTimePickerIngreso.Name = "dateTimePickerIngreso";
-            this.dateTimePickerIngreso.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerIngreso.Size = new System.Drawing.Size(240, 20);
             this.dateTimePickerIngreso.TabIndex = 7;
-            this.dateTimePickerIngreso.Value = new System.DateTime(2023, 11, 8, 19, 20, 0, 0);
+            this.dateTimePickerIngreso.Value = new System.DateTime(2026, 2, 18, 0, 0, 0, 0);
             // 
             // dateTimePickerEgreso
             // 
             this.dateTimePickerEgreso.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePickerEgreso.Location = new System.Drawing.Point(135, 75);
+            this.dateTimePickerEgreso.Location = new System.Drawing.Point(121, 75);
+            this.dateTimePickerEgreso.MinDate = new System.DateTime(2026, 2, 18, 0, 0, 0, 0);
             this.dateTimePickerEgreso.Name = "dateTimePickerEgreso";
-            this.dateTimePickerEgreso.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerEgreso.Size = new System.Drawing.Size(240, 20);
             this.dateTimePickerEgreso.TabIndex = 7;
+            this.dateTimePickerEgreso.Value = new System.DateTime(2026, 2, 18, 0, 0, 0, 0);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // FormularioHorarioAE
             // 
@@ -113,6 +123,7 @@
             this.Name = "FormularioHorarioAE";
             this.Text = "FormularioHorarioAE";
             this.Load += new System.EventHandler(this.FormularioHorarioAE_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,5 +136,6 @@
         private System.Windows.Forms.Label labelEgreso;
         private System.Windows.Forms.DateTimePicker dateTimePickerIngreso;
         private System.Windows.Forms.DateTimePicker dateTimePickerEgreso;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

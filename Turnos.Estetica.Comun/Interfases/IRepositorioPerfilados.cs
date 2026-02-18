@@ -14,6 +14,7 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(Perfilado perfilado);
         void Borrar(int IdPerfilado);
         void Editar(Perfilado perfilado);
+        bool Existe(Perfilado perfilado);   
         Perfilado GetPerfiladPorId(int IdPerfilado);
         List<PerfiladoDto> GetPerfilado();
         List<PerfiladoComboDto> GetCombosDto();

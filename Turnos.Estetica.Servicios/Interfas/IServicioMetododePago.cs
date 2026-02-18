@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Turnos.Estetica.Servicios.Interfas
     {
         void Guardar(MetododePago metododePago);
         void Borrar(int IdMetododepago);
+        bool Existe(MetododePago metododePago);
         List<MetododePago> GetMetododePago();
         
     }

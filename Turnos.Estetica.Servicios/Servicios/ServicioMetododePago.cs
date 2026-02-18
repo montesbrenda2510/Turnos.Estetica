@@ -31,6 +31,19 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
+        public bool Existe(MetododePago metododePago)
+        {
+            try
+            {
+                return _repositorioMetododePago.Existe(metododePago);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<MetododePago> GetMetododePago()
         {
             try

@@ -11,6 +11,7 @@ namespace Turnos.Estetica.Comun.Interfases
 {
     public interface IRepositorioGeneral
     {
+        bool Existe(General general);
         void Agregar(General general);
         void Borrar(int IdGeneral);
         void Editar(General general);

@@ -14,12 +14,17 @@ namespace Turnos.Estetica.Windows
 {
     public partial class FormularioMetododePagoAE : Form
     {
+        private readonly IServicioMetododePago _servicio;
+        private MetododePago metododePago;
+        private bool esEdicion = false;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
             if (metododePago != null)
             {
                 textBoxMetododePago.Text = metododePago.Tipodepago;
+                esEdicion = true;
             }
         }
         public FormularioMetododePagoAE(IServicioMetododePago servicio)
@@ -27,9 +32,7 @@ namespace Turnos.Estetica.Windows
             InitializeComponent();
             _servicio = servicio;
         }
-        private MetododePago metododePago;
-        private readonly IServicioMetododePago _servicio;
-       
+    
 
         private void FormularioMetododePagoAE_Load(object sender, EventArgs e)
         {
@@ -38,14 +41,64 @@ namespace Turnos.Estetica.Windows
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            if (!ValidarDatos())
+                return;
+
+            // creo el objeto si es null
             if (metododePago == null)
-            {
                 metododePago = new MetododePago();
-            }
+
+            //  le asigno valores
             metododePago.Tipodepago = textBoxMetododePago.Text;
-            DialogResult = DialogResult.OK;
+
+            try
+            {
+                if (!_servicio.Existe(metododePago))
+                {
+                    _servicio.Guardar(metododePago);
+
+                    MessageBox.Show("Registro guardado",
+                        "Mensaje",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    DialogResult = DialogResult.OK;
+                }
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
+        private void InicializarControles()
+        {
+            textBoxMetododePago.Clear();
+        }
+
+        private bool ValidarDatos()
+        {
+            errorProvider1.Clear();
+            bool valido = true;
+
+            if (string.IsNullOrWhiteSpace(textBoxMetododePago.Text))
+            {
+                valido = false;
+                errorProvider1.SetError(textBoxMetododePago,
+                    "Debe ingresar un tipo de pago");
+            }
+             return valido;
+        }
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel; 

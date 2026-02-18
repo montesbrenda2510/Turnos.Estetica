@@ -8,7 +8,7 @@ namespace Turnos.Estetica.Entetidades.Combos
 {
     public class UniasComboDto
     {
-        public int IdUnias { get; set; }
+        public int IdUnia { get; set; }
 
         public string Detalle { get; set; }
     }

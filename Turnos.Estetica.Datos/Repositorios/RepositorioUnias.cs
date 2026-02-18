@@ -1,8 +1,11 @@
-﻿using System;
+﻿
+using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Turnos.Estetica.Comun.Interfases;
 using Turnos.Estetica.Entetidades.Combos;
 using Turnos.Estetica.Entetidades.Entidades;
@@ -11,48 +14,30 @@ namespace Turnos.Estetica.Datos.Repositorios
 {
     public class RepositorioUnias : IRepositorioUnias
     {
+
         private readonly string cadenadeConexion;
+
         public RepositorioUnias()
         {
             cadenadeConexion = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
         }
+
         public void Agregar(Unias unias)
         {
             using (var conn = new SqlConnection(cadenadeConexion))
             {
                 conn.Open();
-                string insertQuery = @"INSERT INTO Unias  (TipodeServicioUnia, Valor) VALUES(@TipodeServicioUnia, @Valor);
-					SELECT SCOPE_IDENTITY()";
-                using (var comando = new SqlCommand(insertQuery, conn))
+                string insertQuery = @"INSERT INTO Unias (TipodeServicioUnia, Valor) 
+                                   VALUES (@TipodeServicioUnia, @Valor);
+                                   SELECT CAST(SCOPE_IDENTITY() as int)";
+
+                int id = conn.QuerySingle<int>(insertQuery, new
                 {
+                    TipodeServicioUnia = unias.TipodeServicioUnia,
+                    Valor = unias.Valor
+                });
 
-                    comando.Parameters.Add("@TipodeServicioUnia", SqlDbType.NVarChar);
-                    comando.Parameters["@TipodeServicioUnia"].Value = unias.TipodeServicio;
-
-                    comando.Parameters.Add("@Valor", SqlDbType.Decimal);
-                    comando.Parameters["@Valor"].Value = unias.Valor;
-
-
-                    int id = Convert.ToInt32(comando.ExecuteScalar());
-                    unias.IdUnia = id;
-                }
-            }
-
-           
-        }
-
-        public void Borrar(int IdUnias)
-        {
-            using (var conn = new SqlConnection(cadenadeConexion))
-            {
-                conn.Open();
-                string deleteQuery = "DELETE FROM Unias WHERE IdUnia=@IdUnia";
-                using (var comando = new SqlCommand(deleteQuery, conn))
-                {
-                    comando.Parameters.Add("@IdUnia", SqlDbType.Int);
-                    comando.Parameters["@IdUnia"].Value = IdUnias;
-                    comando.ExecuteNonQuery();
-                }
+                unias.IdUnia = id;
             }
         }
 
@@ -61,82 +46,125 @@ namespace Turnos.Estetica.Datos.Repositorios
             using (var conn = new SqlConnection(cadenadeConexion))
             {
                 conn.Open();
-                string updateQuery = @"UPDATE Unias SET TipodeServicio=@TipodeServicio, Valor=@Valor
-							WHERE IdUnia=@IdUnia";
-                using (var comando = new SqlCommand(updateQuery, conn))
+                string updateQuery = @"UPDATE Unias 
+                                   SET TipodeServicioUnia = @TipodeServicioUnia,
+                                       Valor = @Valor
+                                   WHERE IdUnia = @IdUnia";
+
+                conn.Execute(updateQuery, new
                 {
-
-                    comando.Parameters.Add("TipodeServicio", SqlDbType.NVarChar);
-                    comando.Parameters["@TipodeServicio"].Value = unias.TipodeServicio;
-
-                    comando.Parameters.Add("@Valor", SqlDbType.Int);
-                    comando.Parameters["@Valor"].Value = unias.Valor;
-
-                    comando.ExecuteNonQuery();
-                }
+                    TipodeServicioUnia = unias.TipodeServicioUnia,
+                    Valor = unias.Valor,
+                    IdUnia = unias.IdUnia
+                });
             }
         }
 
-       // public List<UniasComboDto> GetCombosDto()
-       // {
-        //    var listaUnias = new List<UniasComboDto>();
-        //    using (var conn = new SqlConnection(cadenadeConexion))
-        //    {
-        //        conn.Open();
-
-        //        string selectQuery = @"SELECT  
-        //U.IdUnia, Concat(p.TipodeUnia) As Detalle,
-        //FROM 
-        //Perfilado p                
-        //INNER JOIN Tintes t ON p.IdTinte = t.IdTinte ";
-        //        using (var commando = new SqlCommand(selectQuery, conn))
-        //        {
-
-        //            using (var reader = commando.ExecuteReader())
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    var PerfiladoCombo = ConstruirPerfiladoComboDto(reader);
-        //                    listaPerfilado.Add(PerfiladoCombo);
-        //                }
-        //            }
-        //        }
-        //        return listaPerfilado;
-        //    }
-       // }
-
-        public List<Unias> GetUnias()
+        public void Borrar(int idUnia)
         {
-            var listaUnias = new List<Unias>();
             using (var conn = new SqlConnection(cadenadeConexion))
             {
                 conn.Open();
-                string selectQuery = "SELECT IdUnia, TipodeServicioUnia, Valor FROM Unias";
-                using (var commando = new SqlCommand(selectQuery, conn))
-                {
-                    using (var reader = commando.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var unias = ConstruirUnias(reader);
-                            listaUnias.Add(unias);
-                            
-                          
-                        }
-                    }
-                }
-                return listaUnias;
+                string deleteQuery = "DELETE FROM Unias WHERE IdUnia = @IdUnia";
+
+                conn.Execute(deleteQuery, new { IdUnia = idUnia });
             }
         }
 
-        private Unias ConstruirUnias(SqlDataReader reader)
+        public bool Existe(Unias unias)
         {
-            return new Unias
+            using (var conn = new SqlConnection(cadenadeConexion))
             {
+                conn.Open();
+
+                string query;
+
+                if (unias.IdUnia == 0)
+                {
+                    query = @"SELECT COUNT(*) FROM Unias 
+                          WHERE TipodeServicioUnia = @TipodeServicioUnia";
+
+                    int cantidad = conn.QuerySingle<int>(query, new
+                    {
+                        TipodeServicioUnia = unias.TipodeServicioUnia
+                    });
+
+                    return cantidad > 0;
+                }
+                else
+                {
+                    query = @"SELECT COUNT(*) FROM Unias 
+                          WHERE TipodeServicioUnia = @TipodeServicioUnia
+                          AND IdUnia <> @IdUnia";
+
+                    int cantidad = conn.QuerySingle<int>(query, new
+                    {
+                        TipodeServicioUnia = unias.TipodeServicioUnia,
+                        IdUnia = unias.IdUnia
+                    });
+
+                    return cantidad > 0;
+                }
+            }
+        }
+
+        public List<Unias> GetUnias()
+        {
+            var listaUnias = new List<Unias>(); 
+            using (var conn = new SqlConnection(cadenadeConexion))
+            { conn.Open();
+               string selectQuery = "SELECT IdUnia, " +
+                    "TipodeServicioUnia, Valor FROM Unias"; 
+                using (var commando = new SqlCommand(selectQuery, conn)) 
+                { using (var reader = commando.ExecuteReader())
+                    
+                    { while (reader.Read()) { var unias = ConstruirUnias(reader);
+                            listaUnias.Add(unias); } } } return listaUnias; }
+            //using (var conn = new SqlConnection(cadenadeConexion))
+            //{
+            //    conn.Open();
+
+            //    string selectQuery = @"SELECT IdUnia,
+            //                          TipodeServicioUnia AS TipodeServicio,
+            //                          Valor
+            //                   FROM Unias";
+
+            //    return conn.Query<Unias>(selectQuery).ToList();
+            //}
+        }
+        private Unias ConstruirUnias(SqlDataReader reader) 
+        {
+            return new Unias { 
                 IdUnia = reader.GetInt32(0),
-                TipodeServicio = reader.GetString(1),
-                Valor = reader.GetDecimal(2)
-            };
+              TipodeServicioUnia = reader.GetString(1), 
+                Valor = reader.GetDecimal(2) }; }
+        public Unias GetUniaPorId(int idUnia)
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                conn.Open();
+
+                string query = @"SELECT IdUnia,
+                                    TipodeServicioUnia,
+                                    Valor
+                             FROM Unias
+                             WHERE IdUnia = @IdUnia";
+
+                return conn.QuerySingleOrDefault<Unias>(query, new { IdUnia = idUnia });
+            }
+        }
+
+        public List<UniasComboDto> GetCombosDto()
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql = @"SELECT 
+                       IdUnia,
+                       TipoDeServicioUnia AS Detalle
+                       FROM Unias";
+
+                return conn.Query<UniasComboDto>(sql).ToList();
+            }
         }
     }
 }

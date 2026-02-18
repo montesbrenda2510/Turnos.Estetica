@@ -12,10 +12,10 @@ namespace Turnos.Estetica.Servicios.Interfas
     public interface IServicioServicios
     {
         void Guardar(Servicio servicioDto);
-        void Borrar(int IdServicios);
+        void Borrar(int IdServiciosDto);
         List<ServicioDto> GetServicioDto();
         bool Existe(Servicio servicioDto);
-        Servicio GetServicioPorId(int idServicio);
+        Servicio GetServicioPorId(int idServicioDto);
         List<ServicioComboDto> GetCombosDto();
     }
 }

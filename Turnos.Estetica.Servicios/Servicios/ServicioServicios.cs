@@ -20,11 +20,11 @@ namespace Turnos.Estetica.Servicios.Servicios
             _repositorioServicios = new RepositorioServicios();
         }
 
-        public void Borrar(int IdServicios)
+        public void Borrar(int IdServiciosDto)
         {
             try
             {
-                _repositorioServicios.Borrar(IdServicios);
+                _repositorioServicios.Borrar(IdServiciosDto);
             }
             catch (Exception ex)
             {
@@ -35,7 +35,15 @@ namespace Turnos.Estetica.Servicios.Servicios
 
         public bool Existe(Servicio servicioDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repositorioServicios.Existe(servicioDto);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
        
@@ -66,11 +74,11 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
-        public Servicio GetServicioPorId(int idServicio)
+        public Servicio GetServicioPorId(int idServicioDto)
         {
             try
             {
-                return _repositorioServicios.GetServicioPorId(idServicio);
+                return _repositorioServicios.GetServicioPorId(idServicioDto);
             }
             catch (Exception)
             {

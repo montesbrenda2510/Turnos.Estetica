@@ -55,6 +55,7 @@
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(168, 20);
             this.textBoxNombre.TabIndex = 12;
+            this.textBoxNombre.TextChanged += new System.EventHandler(this.textBoxNombre_TextChanged);
             // 
             // labelApellido
             // 

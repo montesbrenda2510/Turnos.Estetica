@@ -12,6 +12,7 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(MetododePago metododePago);
         void Borrar(int IdMetododepago);
         void Editar(MetododePago metododePago);
+        bool Existe(MetododePago metododePago);
         List<MetododePago> GetMetododePago();
 
     }

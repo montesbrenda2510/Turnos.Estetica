@@ -10,6 +10,7 @@ namespace Turnos.Estetica.Comun.Interfases
 {
     public interface IRepositorioClientes
     {
+        bool Existe(Clientes clientes);
         void Agregar(Clientes clientes);
         void Borrar(int IdCliente);
         void Editar(Clientes clientes);

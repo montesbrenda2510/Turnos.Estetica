@@ -13,7 +13,7 @@ namespace Turnos.Estetica.Comun.Interfases
     {
         void Agregar(Servicio servicio);
         void Borrar(int IdServicio);
-      
+       bool Existe(Servicio servicio);
         void Editar(Servicio servicioDto);
         List<ServicioDto> GetServicioDto();
         Servicio GetServicioPorId(int IdServicio);

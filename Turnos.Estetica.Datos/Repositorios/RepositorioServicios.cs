@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Reflection;
 using Turnos.Estetica.Comun.Interfases;
 using Turnos.Estetica.Entetidades.Combos;
@@ -15,48 +16,25 @@ namespace Turnos.Estetica.Datos.Repositorios
     public class RepositorioServicios : IRepositorioServicios
     {
         private readonly string cadenadeConexion;
+
         public RepositorioServicios()
         {
-            cadenadeConexion = ConfigurationManager.ConnectionStrings["MiConexion"].ToString();
+            cadenadeConexion = ConfigurationManager
+                .ConnectionStrings["MiConexion"]
+                .ConnectionString;
         }
+
         public void Agregar(Servicio servicio)
         {
             using (var conn = new SqlConnection(cadenadeConexion))
             {
-                conn.Open();
-                string insertQuery = @"INSERT INTO Servicios ( IdUnia, IdPerfilado, IdPestania,ValoraPagar) 
-                                       VALUES( @IdUnia, @IdPerfilado, @IdPestania,@ValoraPagar);
-                                       SELECT SCOPE_IDENTITY()";
-                using (var comando = new SqlCommand(insertQuery, conn))
-                {
+                string sql = @"INSERT INTO Servicios 
+                           (IdUnia, IdPerfilado, IdPestania, ValoraPagar)
+                           VALUES (@IdUnia, @IdPerfilado, @IdPestania, @ValoraPagar);
+                           SELECT CAST(SCOPE_IDENTITY() as int);";
 
-
-                    comando.Parameters.Add("@IdUnia", SqlDbType.Int);
-                    comando.Parameters["@IdUnia"].Value = servicio.IdUnias;
-                    comando.Parameters.Add("@IdPerfilado", SqlDbType.Int);
-                    comando.Parameters["@IdPerfilado"].Value = servicio.IdPerfilado;
-                    comando.Parameters.Add("@IdPestania", SqlDbType.Int);
-                    comando.Parameters["@IdPestania"].Value = servicio.IdPestanias;
-                    comando.Parameters.Add("@ValoraPagar", SqlDbType.Decimal);
-                    comando.Parameters["@ValoraPagar"].Value = servicio.ValoraPagar;
-                    int id = Convert.ToInt32(comando.ExecuteScalar());
-                    servicio.IdServicio = id;
-                }
-            }
-        }
-
-        public void Borrar(int IdServicio)
-        {
-            using (var conn = new SqlConnection(cadenadeConexion))
-            {
-                conn.Open();
-                string deleteQuery = "DELETE FROM Servicios WHERE IdServicio=@IdServicio";
-                using (var comando = new SqlCommand(deleteQuery, conn))
-                {
-                    comando.Parameters.Add("@IdServicio", SqlDbType.Int);
-                    comando.Parameters["@IdServicio"].Value = IdServicio;
-                    comando.ExecuteNonQuery();
-                }
+                int id = conn.QuerySingle<int>(sql, servicio);
+                servicio.IdServicio = id;
             }
         }
 
@@ -64,132 +42,115 @@ namespace Turnos.Estetica.Datos.Repositorios
         {
             using (var conn = new SqlConnection(cadenadeConexion))
             {
-                conn.Open();
-                string updateQuery = @"UPDATE Servicios SET IdUnia=@IdUnia, IdPerfilado=@IdPerfilado, IdPestania=@IdPestania,ValoraPagar=@ValoraPagar
-        		WHERE IdServicio=@IdServicio";
-                using (var comando = new SqlCommand(updateQuery, conn))
-                {
-                    comando.Parameters.Add("@IdServicio", SqlDbType.Int);
-                    comando.Parameters["@IdServicio"].Value = servicio.IdServicio;
-                    comando.Parameters.Add("@IdUnia", SqlDbType.Int);
-                    comando.Parameters["@IdUnia"].Value = servicio.IdUnias;
-                    comando.Parameters.Add("@IdPerfilado", SqlDbType.Int);
-                    comando.Parameters["@IdPerfilado"].Value = servicio.IdPerfilado;
-                    comando.Parameters.Add("@IdPestania", SqlDbType.Int);
-                    comando.Parameters["@IdPestania"].Value = servicio.IdPestanias;
-                    comando.Parameters.Add("@ValoraPagar", SqlDbType.Decimal);
-                    comando.Parameters["@ValoraPagar"].Value = servicio.ValoraPagar;
+                string sql = @"UPDATE Servicios 
+                           SET IdUnia = @IdUnia,
+                               IdPerfilado = @IdPerfilado,
+                               IdPestania = @IdPestania,
+                               ValoraPagar = @ValoraPagar
+                           WHERE IdServicio = @IdServicio";
 
-                    comando.ExecuteNonQuery();
+                conn.Execute(sql, servicio);
+            }
+        }
+
+        public void Borrar(int idServicio)
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql = "DELETE FROM Servicios WHERE IdServicio = @IdServicio";
+
+                conn.Execute(sql, new { IdServicio = idServicio });
+            }
+        }
+
+        public bool Existe(Servicio servicio)
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql;
+
+                if (servicio.IdServicio == 0)
+                {
+                    sql = @"SELECT COUNT(*)
+                        FROM Servicios
+                        WHERE IdUnia = @IdUnia
+                        AND IdPerfilado = @IdPerfilado
+                        AND IdPestania = @IdPestania";
                 }
+                else
+                {
+                    sql = @"SELECT COUNT(*)
+                        FROM Servicios
+                        WHERE IdUnia = @IdUnia
+                        AND IdPerfilado = @IdPerfilado
+                        AND IdPestania = @IdPestania
+                        AND IdServicio <> @IdServicio";
+                }
+
+                int cantidad = conn.ExecuteScalar<int>(sql, servicio);
+                return cantidad > 0;
+            }
+        }
+
+        public Servicio GetServicioPorId(int idServicio)
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql = @"SELECT IdServicio, IdUnia, IdPerfilado, 
+                                  IdPestania, ValoraPagar
+                           FROM Servicios
+                           WHERE IdServicio = @IdServicio";
+
+                return conn.QuerySingleOrDefault<Servicio>(
+                    sql,
+                    new { IdServicio = idServicio });
+            }
+        }
+
+        public List<ServicioDto> GetServicioDto()
+        {
+            using (var conn = new SqlConnection(cadenadeConexion))
+            {
+                string sql = @"SELECT s.IdServicio,
+                                  u.TipodeServicioUnia,
+                                  per.TipodePerfilado,
+                                  ti.Color AS colorPerfilado,
+                                  pes.TipodePestania,
+                                  t.Color AS ColorPestania,
+                                  s.ValoraPagar
+                           FROM Servicios s
+                           INNER JOIN Unias u ON s.IdUnia = u.IdUnia
+                           INNER JOIN Perfilado per ON s.IdPerfilado = per.IdPerfilado
+                           INNER JOIN Tintes ti ON per.IdTinte = ti.IdTinte
+                           INNER JOIN Pestanias pes ON s.IdPestania = pes.IdPestania
+                           INNER JOIN Tintes t ON pes.IdTinte = t.IdTinte";
+
+                return conn.Query<ServicioDto>(sql).ToList();
             }
         }
 
         public List<ServicioComboDto> GetCombosDto()
         {
-            var listaServicio = new List<ServicioComboDto>();
             using (var conn = new SqlConnection(cadenadeConexion))
             {
-                conn.Open();
-               
-                string selectQuery = @"SELECT  s.IdServicio,concat( u.TipodeServicioUnia, per.TipodePerfilado, 
-ti.Color, pes.TipodePestania, t.color) as Detalle, s.ValoraPagar as ValorTotal
-FROM Servicios s                   
-INNER JOIN Unias u ON s.IdUnia= u.IdUnia
-INNER JOIN Perfilado per ON s.IdPerfilado = per.IdPerfilado
-INNER JOIN Tintes ti ON per.IdTinte=ti.IdTinte
-INNER JOIN Pestanias pes ON s.IdPestania = pes.IdPestania
-INNER JOIN Tintes t ON pes.IdTinte=t.IdTinte; ";
-                using (var commando = new SqlCommand(selectQuery, conn))
-                {
+                string sql = @"SELECT s.IdServicio,
+                           CONCAT(
+                               u.TipodeServicioUnia, ' - ',
+                               per.TipodePerfilado, ' ',
+                               ti.Color, ' - ',
+                               pes.TipodePestania, ' ',
+                               t.Color
+                           ) AS Detalle,
+                           s.ValoraPagar AS Valortotal
+                           FROM Servicios s
+                           INNER JOIN Unias u ON s.IdUnia = u.IdUnia
+                           INNER JOIN Perfilado per ON s.IdPerfilado = per.IdPerfilado
+                           INNER JOIN Tintes ti ON per.IdTinte = ti.IdTinte
+                           INNER JOIN Pestanias pes ON s.IdPestania = pes.IdPestania
+                           INNER JOIN Tintes t ON pes.IdTinte = t.IdTinte";
 
-                    using (var reader = commando.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var servicioCombo = ConstruirServicioComboDto(reader);
-                            listaServicio.Add(servicioCombo);
-                        }
-                    }
-                }
-                return listaServicio;
+                return conn.Query<ServicioComboDto>(sql).ToList();
             }
-        }
-
-        private ServicioComboDto ConstruirServicioComboDto(SqlDataReader reader)
-        {
-            return new ServicioComboDto
-            {
-                IdServicio = reader.GetInt32(0),
-
-                Detalle = reader.GetString(1),
-
-                Valortotal = reader.GetDecimal(2),
-
-            };
-        }
-
-        public List<ServicioDto> GetServicioDto()
-        {
-            var listaServicio = new List<ServicioDto>();
-            using (var conn = new SqlConnection(cadenadeConexion))
-            {
-                conn.Open();
-                string selectQuery = @"SELECT  s.IdServicio, u.TipodeServicioUnia, per.TipodePerfilado, 
-ti.Color, pes.TipodePestania, t.color, s.ValoraPagar
-FROM Servicios s                   
-INNER JOIN Unias u ON s.IdUnia= u.IdUnia
-INNER JOIN Perfilado per ON s.IdPerfilado = per.IdPerfilado
-INNER JOIN Tintes ti ON per.IdTinte=ti.IdTinte
-INNER JOIN Pestanias pes ON s.IdPestania = pes.IdPestania
-INNER JOIN Tintes t ON pes.IdTinte=t.IdTinte";
-                using (var commando = new SqlCommand(selectQuery, conn))
-                {
-
-                    using (var reader = commando.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var servicio = ConstruirServicioDto(reader);
-                            listaServicio.Add(servicio);
-                        }
-                    }
-                }
-                return listaServicio;
-            }
-        }
-
-        public Servicio GetServicioPorId(int IdServicio)
-        {
-            Servicio servicio = null;
-            using (var conn = new SqlConnection(cadenadeConexion))
-            {
-                string SelectQuery = @"SELECT IdServicio, IdUnia, IdPerfilado,IdPestania,  ValoraPagar
-
-                                     From Servicios Where IdServicio=@IdServicio";
-                servicio = conn.QuerySingleOrDefault<Servicio>(SelectQuery, new { IdServicio=IdServicio });
-
-            }
-            return servicio;
-        }
-
-        private ServicioDto ConstruirServicioDto(SqlDataReader reader)
-        {
-            return new ServicioDto
-            {
-                IdServicio = reader.GetInt32(0),
-
-                TipodeServicioUnia = reader.GetString(1),
-
-                TipodePerfilado = reader.GetString(2),
-                colorPerfilado = reader.GetString(3),
-
-                TipodePestenia = reader.GetString(4),
-                ColorPestania = reader.GetString(5),
-
-                ValoraPagar = reader.GetDecimal(6),
-
-            };
         }
     }
 

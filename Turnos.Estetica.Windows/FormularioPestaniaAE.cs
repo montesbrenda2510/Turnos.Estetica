@@ -15,40 +15,48 @@ namespace Turnos.Estetica.Windows
 {
     public partial class FormularioPestaniaAE : Form
     {
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            CargarDatosComboTintes(ref comboBoxColor);
-            if (pestania != null)
-            {
-               textBoxTipoS.Text = pestania.tipodePestania;
-                comboBoxColor.SelectedValue = pestania.IdTinte;
-                textBox1.Text = pestania.Valor.ToString();
-            }
-        }
         private readonly IServicioPestanias _servicio;
-        private Pestanias pestania;
-      
         private readonly IServiciosTintes _servicioTintes;
+
+        private Pestanias pestania;
+        private bool esEdicion = false;
+
         public FormularioPestaniaAE(IServicioPestanias servicio)
         {
             InitializeComponent();
             _servicio = servicio;
             _servicioTintes = new ServiciosTintes();
         }
-        private void CargarDatosComboTintes(ref ComboBox cbo)
+
+        protected override void OnLoad(EventArgs e)
         {
-            var listatintes = _servicioTintes.GetTintes();
-            Tintes defaultTintes = new Tintes()
+            base.OnLoad(e);
+            CargarDatosComboTintes(comboBoxColor);
+
+            if (pestania != null)
+            {
+                textBoxTipoS.Text = pestania.tipodePestania;
+                comboBoxColor.SelectedValue = pestania.IdTinte;
+                textBox1.Text = pestania.Valor.ToString();
+                esEdicion = true;
+            }
+        }
+
+        private void CargarDatosComboTintes( ComboBox cbo)
+        {
+            var lista = _servicioTintes.GetTintes();
+
+            var defecto = new Tintes
             {
                 IdTinte = 0,
                 Color = "Seleccione el color del Tinte"
             };
-            listatintes.Insert(0, defaultTintes);
-            cbo.DataSource = listatintes;
+
+            lista.Insert(0, defecto);
+
+            cbo.DataSource = lista;
             cbo.DisplayMember = "Color";
             cbo.ValueMember = "IdTinte";
-
             cbo.SelectedIndex = 0;
         }
         private void comboBoxColor_SelectedIndexChanged(object sender, EventArgs e)
@@ -66,47 +74,116 @@ namespace Turnos.Estetica.Windows
             return pestania;
         }
 
-        internal void SetPerfilado(Pestanias pestania)
+        public void SetPestania(Pestanias pestania)
         {
             this.pestania=pestania;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (ValidarDatos())
+            if (!ValidarDatos())
+                return;
+
+            if (pestania == null)
+                pestania = new Pestanias();
+
+            pestania.tipodePestania = textBoxTipoS.Text.Trim();
+            pestania.IdTinte = (int)comboBoxColor.SelectedValue;
+            pestania.Valor = decimal.Parse(textBox1.Text);
+
+            try
             {
-                if (pestania == null)
+                if (!_servicio.Existe(pestania))
                 {
-                    pestania = new Pestanias();
+                    _servicio.Guardar(pestania);
 
+                    if (!esEdicion)
+                    {
+                        MessageBox.Show("Registro agregado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult dr = MessageBox.Show(
+                            "¿Desea agregar otro registro?",
+                            "Pregunta",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button2);
+
+                        if (dr == DialogResult.No)
+                        {
+                            DialogResult = DialogResult.OK;
+                            return;
+                        }
+
+                        // limpiar para nuevo registro
+                        pestania = null;
+                        InicializarControles();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Registro editado",
+                            "Mensaje",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        DialogResult = DialogResult.OK;
+                    }
                 }
-                pestania.tipodePestania = textBoxTipoS.Text;
-                pestania.IdTinte = (int)comboBoxColor.SelectedValue;
-                pestania.Valor = decimal.Parse(textBox1.Text);
-
-                DialogResult = DialogResult.OK;
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void InicializarControles()
+        {
+            textBoxTipoS.Clear();
+            comboBoxColor.SelectedIndex = 0;
+            textBox1.Clear();
+            textBoxTipoS.Focus();
         }
 
         private bool ValidarDatos()
         {
             errorProvider1.Clear();
             bool valido = true;
-            if (string.IsNullOrEmpty(textBoxTipoS.Text))
+
+            if (string.IsNullOrWhiteSpace(textBoxTipoS.Text))
             {
                 valido = false;
                 errorProvider1.SetError(textBoxTipoS, "Debe colocar un Tipo de servicio");
             }
-            if (string.IsNullOrEmpty(comboBoxColor.Text))
+
+            if ((int)comboBoxColor.SelectedValue == 0)
             {
                 valido = false;
                 errorProvider1.SetError(comboBoxColor, "Debe seleccionar un color");
             }
-            if (string.IsNullOrEmpty(textBox1.Text))
+
+            if (!decimal.TryParse(textBox1.Text, out decimal valor))
             {
                 valido = false;
-                errorProvider1.SetError(textBox1, "Debe colocar un Valor al servicio");
+                errorProvider1.SetError(textBox1, "Debe colocar un valor numérico válido");
             }
+            else if (valor <= 0)
+            {
+                valido = false;
+                errorProvider1.SetError(textBox1, "El valor debe ser mayor a 0");
+            }
+
             return valido;
         }
 

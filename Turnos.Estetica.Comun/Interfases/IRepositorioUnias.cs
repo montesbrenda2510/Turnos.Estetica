@@ -9,7 +9,8 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(Unias unias);
         void Borrar(int IdUnias);
         void Editar(Unias unias);
+        bool Existe(Unias unias);
         List<Unias> GetUnias();
-        
+        List<UniasComboDto> GetCombosDto();
     }
 }

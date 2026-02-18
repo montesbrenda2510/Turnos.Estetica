@@ -12,6 +12,7 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(Horario horario);
         void Borrar(int IdHorario);
         void Editar(Horario horario);
+        bool Existe(Horario horario);   
         List<Horario> GetHorarios();
         Horario GetHorarioPorId(int IdHorario);
     }

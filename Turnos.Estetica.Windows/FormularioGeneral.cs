@@ -103,22 +103,24 @@ namespace Turnos.Estetica.Windows
 
         private void toolStripButtonNuevo_Click(object sender, EventArgs e)
         {
-            FormularioGeneralAE frm = new FormularioGeneralAE(_serviciosGeneral, _servicioPerfilado,
-                _servicioPestania, _servicioUnia, 
-               _turno,_horario, _servicioServicios, _servicioClientes,_ServicioMetododePago) { Text = "Nuevo Turno" };
-            DialogResult dr = frm.ShowDialog();
-            if (dr == DialogResult.Cancel) return;
+            FormularioGeneralAE frm = new FormularioGeneralAE(
+         _serviciosGeneral,
+         _servicioPerfilado,
+         _servicioPestania,
+         _servicioUnia,
+         _turno,
+         _horario,
+         _servicioServicios,
+         _servicioClientes,
+         _ServicioMetododePago);
 
-            //obtener el clientes, se lo pido al formulario
-            var general = frm.GetGeneral();
-            //preguntar si existe 
-            _serviciosGeneral.Guardar(general);
-            //preguntar la cantidad
-           // _serviciosGeneral.GetCantidad();
-            InicializarGrilla();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                InicializarGrilla();
+            }
         }
 
-        private void ButtonFiltrar_Click(object sender, EventArgs e)
+            private void ButtonFiltrar_Click(object sender, EventArgs e)
         {
             ButtonFiltrar.Text = "";
 
@@ -177,7 +179,7 @@ namespace Turnos.Estetica.Windows
                 }
                 var general2 = generalAE.GetGeneral();
                 //preguntar si exite 
-                _serviciosGeneral.Guardar(general2);
+                //_serviciosGeneral.Guardar(general2);
                 InicializarGrilla();
 
                 MessageBox.Show($"Se edito el turno completo: {general.IdGeneral} "

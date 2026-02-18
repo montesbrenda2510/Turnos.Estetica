@@ -33,7 +33,16 @@ namespace Turnos.Estetica.Servicios.Servicios
 
         public bool Existe(Clientes clientes)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repositorioClientes.Existe(clientes);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public List<Clientes> GetCliente()

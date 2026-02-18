@@ -32,7 +32,16 @@ namespace Turnos.Estetica.Servicios.Servicios
 
         public bool Existe(General general)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repositorioGeneral.Existe(general);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         //public void GetCantidad()
@@ -40,7 +49,7 @@ namespace Turnos.Estetica.Servicios.Servicios
         //    throw new NotImplementedException();
         //}
 
-       
+
 
         public List<GeneralDto> GetGeneralDto()
         {

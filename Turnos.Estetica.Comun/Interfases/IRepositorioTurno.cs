@@ -14,6 +14,7 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(Turno turno);
         void Borrar(int IdTurno);
         void Editar(Turno turno);
+        bool Exite (Turno turno);
         List<TurnosDto> GetTurno();
         Turno GetTurnoPorId(int IdTurno);
         List<TurnocomboDto> GetCombosDto();

@@ -12,6 +12,7 @@ namespace Turnos.Estetica.Comun.Interfases
         void Agregar(Tintes tintes);
         void Borrar(int IdTinte);
         void Editar(Tintes tintes);
+        bool Existe(Tintes tintes); 
         List<Tintes> GetTintes();
     }
 }

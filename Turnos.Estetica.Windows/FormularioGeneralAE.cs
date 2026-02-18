@@ -10,28 +10,31 @@ namespace Turnos.Estetica.Windows
 {
     public partial class FormularioGeneralAE : Form
     {
+        private bool esEdicion = false;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
+            CargarCombos();
+
+            if (general != null)
+            {
+                esEdicion = true;
+
+                comboBoxCliente.SelectedValue = general.IdCliente;
+                comboBoxUnia.SelectedValue = general.IdServicio;
+                comboBoxMdPago.SelectedValue = general.IdMetododepago;
+                comboBoxTurno.SelectedValue = general.IdTurno;
+                textBoxAsistencia.Text = general.Asistencia;
+            }
+        }
+        private void CargarCombos()
+        {
             CargarDatosComboCliente(ref comboBoxCliente);
             CargarDatosComboServicio(ref comboBoxUnia);
             CargarDatosComboTurno(ref comboBoxTurno);
             CargarDatosComboMetododePago(ref comboBoxMdPago);
-            if (general != null)
-            { 
-                var turno = _turno.GetTurnoPorId(general.IdTurno);
-                var horario = _horario.GetHorarioPorId(turno.IdHorario);
-                comboBoxCliente.SelectedValue = general.IdCliente;
-                
-                comboBoxTurno.SelectedValue = general.IdTurno;
-                comboBoxMdPago.SelectedValue = general.IdMetododepago;
-      
-                comboBoxUnia.SelectedValue = general.IdServicio;
-
-            }
         }
-
         private void CargarDatosComboMetododePago(ref ComboBox comboBoxMdPago)
         {
             var listaMetododePago = _servicioMetododePago.GetMetododePago();
@@ -104,7 +107,7 @@ namespace Turnos.Estetica.Windows
             Unias defaultUnia = new Unias()
             {
                 IdUnia = 0,
-                TipodeServicio = "Seleccione el un tipo de servicio Unia"
+                TipodeServicioUnia = "Seleccione el un tipo de servicio Unia"
             };
             listaUnias.Insert(0, defaultUnia);
             comboBoxUnias.DataSource = listaUnias;
@@ -191,27 +194,55 @@ namespace Turnos.Estetica.Windows
         private void buttonOk_Click(object sender, EventArgs e)
         {
 
-            if (ValidarDatos())
+            if (!ValidarDatos()) return;
+
+            if (general == null)
+                general = new General();
+
+            general.IdCliente = Convert.ToInt32(comboBoxCliente.SelectedValue);
+            general.IdServicio = Convert.ToInt32(comboBoxUnia.SelectedValue);
+            general.IdMetododepago = Convert.ToInt32(comboBoxMdPago.SelectedValue);
+            general.IdTurno = Convert.ToInt32(comboBoxTurno.SelectedValue);
+            general.Asistencia = textBoxAsistencia.Text;
+
+            try
             {
-                if (general == null)
+                if (!_servicio.Existe(general))
                 {
-                    general = new General();
+                    _servicio.Guardar(general);
 
+                    MessageBox.Show(esEdicion ? "Registro editado" : "Registro agregado",
+                        "Mensaje",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    DialogResult = DialogResult.OK;
                 }
-
-                general.IdCliente =(int)comboBoxCliente.SelectedValue;
-              
-                general.IdServicio=(int)comboBoxUnia.SelectedValue;
-                general.IdMetododepago = (int)comboBoxMdPago.SelectedValue;
-
-                general.IdTurno = (int)comboBoxTurno.SelectedValue;
-                general.Asistencia = textBoxAsistencia.Text;
-                
-
-
-                DialogResult = DialogResult.OK;
+                else
+                {
+                    MessageBox.Show("Registro duplicado",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
+
+        private void InicializarControles()
+        {
+
+            CargarCombos();
+            textBoxAsistencia.Clear();
+
+        }
+    
 
         private bool ValidarDatos()
         {
@@ -258,9 +289,9 @@ namespace Turnos.Estetica.Windows
             return general;
         }
 
-        internal void SetGeneral(General general1)
+        internal void SetGeneral(General general)
         {
-            this.general = general1;
+            this.general = general;
         }
 
         private void label5_Click(object sender, EventArgs e)

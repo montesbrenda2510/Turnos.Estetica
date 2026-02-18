@@ -27,7 +27,18 @@ namespace Turnos.Estetica.Servicios.Servicios
             }
         }
 
-       
+        public bool Existe(Tintes tintes)
+        {
+            try
+            {
+                return _repositorioTintes.Existe(tintes);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public List<Tintes> GetTintes()
         {
